@@ -1,0 +1,16 @@
+pymupdf
+python-docx
+pytesseract
+opencv-python
+numpy
+scikit-learn
+joblib
+rank-bm25
+nltk
+sumy
+pyttsx3
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+pytest

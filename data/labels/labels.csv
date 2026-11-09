@@ -1,0 +1,159 @@
+doc,block_id,label,how,text,size_ratio,bold_ratio,italic_ratio,rel_x0,rel_y0,rel_y1,rel_width,n_chars,n_words,n_lines,digit_ratio,upper_ratio,ends_with_period,starts_with_bullet,looks_like_page_number,repeated_margin,is_ocr
+nutrition.pdf,p1_b0,footer,gold,Health Notes Spring Edition,0.82,0.0,0.0,0.119,0.039,0.054,0.762,27,4,2,0.0,0.167,False,False,False,True,0
+nutrition.pdf,p1_b1,heading,gold,Chapter 1: Nutrition Part 1,1.64,1.0,0.0,0.129,0.094,0.123,0.356,27,5,1,0.074,0.15,False,False,False,False,0
+nutrition.pdf,p1_b2,paragraph,gold,Nutrition is an important subject for balanced diets. Many people study nutritio,1.0,0.0,0.0,0.129,0.134,0.169,0.737,172,27,2,0.0,0.021,True,False,False,False,0
+nutrition.pdf,p1_b3,heading,gold,Nutrition in practice 1,1.18,1.0,0.0,0.129,0.18,0.201,0.208,23,4,1,0.043,0.053,False,False,False,False,0
+nutrition.pdf,p1_b4,paragraph,gold,Section 1 looks at nutrition in more detail. Experts recommend starting with the,1.0,0.0,0.0,0.129,0.207,0.243,0.691,154,24,2,0.006,0.016,True,False,False,False,0
+nutrition.pdf,p1_b5,list,gold,• First point about variety and portion size number 1,1.0,0.0,0.0,0.129,0.253,0.272,0.406,53,10,2,0.019,0.024,False,True,False,False,0
+nutrition.pdf,p1_b6,list,gold,• Second point about how food affects health number 1,1.0,0.0,0.0,0.129,0.28,0.3,0.426,53,10,2,0.019,0.024,False,True,False,False,0
+nutrition.pdf,p1_b7,list,gold,• Third point about balanced diets number 1,1.0,0.0,0.0,0.129,0.308,0.328,0.344,43,8,2,0.023,0.029,False,True,False,False,0
+nutrition.pdf,p1_b8,paragraph,gold,A common mistake is to ignore variety and portion size. Readers who keep notes o,1.0,0.0,0.0,0.129,0.336,0.372,0.697,151,26,2,0.0,0.016,True,False,False,False,0
+nutrition.pdf,p1_b9,page_number,gold,1,0.82,0.0,0.0,0.496,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+nutrition.pdf,p2_b0,footer,gold,Health Notes Spring Edition,0.82,0.0,0.0,0.119,0.039,0.054,0.762,27,4,2,0.0,0.167,False,False,False,True,0
+nutrition.pdf,p2_b1,heading,gold,Chapter 2: Nutrition Part 2,1.64,1.0,0.0,0.129,0.094,0.123,0.356,27,5,1,0.074,0.15,False,False,False,False,0
+nutrition.pdf,p2_b2,paragraph,gold,Nutrition is an important subject for balanced diets. Many people study nutritio,1.0,0.0,0.0,0.129,0.134,0.169,0.737,172,27,2,0.0,0.021,True,False,False,False,0
+nutrition.pdf,p2_b3,heading,gold,Nutrition in practice 2,1.18,1.0,0.0,0.129,0.18,0.201,0.208,23,4,1,0.043,0.053,False,False,False,False,0
+nutrition.pdf,p2_b4,paragraph,gold,Section 2 looks at nutrition in more detail. Experts recommend starting with the,1.0,0.0,0.0,0.129,0.207,0.243,0.691,154,24,2,0.006,0.016,True,False,False,False,0
+nutrition.pdf,p2_b5,table,gold,Item Type Score,0.91,0.0,0.0,0.224,0.257,0.272,0.467,15,3,3,0.0,0.231,False,False,False,False,0
+nutrition.pdf,p2_b6,table,gold,Alpha 2 Basic 20,0.91,0.0,0.0,0.224,0.278,0.294,0.445,16,4,3,0.188,0.2,False,False,False,False,0
+nutrition.pdf,p2_b7,table,gold,Beta 2 Advanced 40,0.91,0.0,0.0,0.224,0.299,0.315,0.445,18,4,3,0.167,0.167,False,False,False,False,0
+nutrition.pdf,p2_b8,caption,gold,Table 2: Sample scores for nutrition.,0.86,0.0,0.0,0.129,0.317,0.332,0.234,37,6,1,0.027,0.069,True,False,False,False,0
+nutrition.pdf,p2_b9,paragraph,gold,A common mistake is to ignore variety and portion size. Readers who keep notes o,1.0,0.0,0.0,0.129,0.343,0.379,0.697,151,26,2,0.0,0.016,True,False,False,False,0
+nutrition.pdf,p2_b10,page_number,gold,2,0.82,0.0,0.0,0.496,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+nutrition.pdf,p3_b0,footer,gold,Health Notes Spring Edition,0.82,0.0,0.0,0.119,0.039,0.054,0.762,27,4,2,0.0,0.167,False,False,False,True,0
+nutrition.pdf,p3_b1,heading,gold,Chapter 3: Nutrition Part 3,1.64,1.0,0.0,0.129,0.094,0.123,0.356,27,5,1,0.074,0.15,False,False,False,False,0
+nutrition.pdf,p3_b2,paragraph,gold,Nutrition is an important subject for balanced diets. Many people study nutritio,1.0,0.0,0.0,0.129,0.134,0.169,0.737,172,27,2,0.0,0.021,True,False,False,False,0
+nutrition.pdf,p3_b3,heading,gold,Nutrition in practice 3,1.18,1.0,0.0,0.129,0.18,0.201,0.208,23,4,1,0.043,0.053,False,False,False,False,0
+nutrition.pdf,p3_b4,paragraph,gold,Section 3 looks at nutrition in more detail. Experts recommend starting with the,1.0,0.0,0.0,0.129,0.207,0.243,0.691,154,24,2,0.006,0.016,True,False,False,False,0
+nutrition.pdf,p3_b5,list,gold,• First point about variety and portion size number 3,1.0,0.0,0.0,0.129,0.253,0.272,0.406,53,10,2,0.019,0.024,False,True,False,False,0
+nutrition.pdf,p3_b6,list,gold,• Second point about how food affects health number 3,1.0,0.0,0.0,0.129,0.28,0.3,0.426,53,10,2,0.019,0.024,False,True,False,False,0
+nutrition.pdf,p3_b7,list,gold,• Third point about balanced diets number 3,1.0,0.0,0.0,0.129,0.308,0.328,0.344,43,8,2,0.023,0.029,False,True,False,False,0
+nutrition.pdf,p3_b8,paragraph,gold,A common mistake is to ignore variety and portion size. Readers who keep notes o,1.0,0.0,0.0,0.129,0.336,0.372,0.697,151,26,2,0.0,0.016,True,False,False,False,0
+nutrition.pdf,p3_b9,page_number,gold,3,0.82,0.0,0.0,0.496,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+nutrition.pdf,p4_b0,footer,gold,Health Notes Spring Edition,0.82,0.0,0.0,0.119,0.039,0.054,0.762,27,4,2,0.0,0.167,False,False,False,True,0
+nutrition.pdf,p4_b1,heading,gold,Chapter 4: Nutrition Part 4,1.64,1.0,0.0,0.129,0.094,0.123,0.356,27,5,1,0.074,0.15,False,False,False,False,0
+nutrition.pdf,p4_b2,paragraph,gold,Nutrition is an important subject for balanced diets. Many people study nutritio,1.0,0.0,0.0,0.129,0.134,0.169,0.737,172,27,2,0.0,0.021,True,False,False,False,0
+nutrition.pdf,p4_b3,heading,gold,Nutrition in practice 4,1.18,1.0,0.0,0.129,0.18,0.201,0.208,23,4,1,0.043,0.053,False,False,False,False,0
+nutrition.pdf,p4_b4,paragraph,gold,Section 4 looks at nutrition in more detail. Experts recommend starting with the,1.0,0.0,0.0,0.129,0.207,0.243,0.691,154,24,2,0.006,0.016,True,False,False,False,0
+nutrition.pdf,p4_b5,table,gold,Item Type Score,0.91,0.0,0.0,0.224,0.257,0.272,0.467,15,3,3,0.0,0.231,False,False,False,False,0
+nutrition.pdf,p4_b6,table,gold,Alpha 4 Basic 40,0.91,0.0,0.0,0.224,0.278,0.294,0.445,16,4,3,0.188,0.2,False,False,False,False,0
+nutrition.pdf,p4_b7,table,gold,Beta 4 Advanced 80,0.91,0.0,0.0,0.224,0.299,0.315,0.445,18,4,3,0.167,0.167,False,False,False,False,0
+nutrition.pdf,p4_b8,caption,gold,Table 4: Sample scores for nutrition.,0.86,0.0,0.0,0.129,0.317,0.332,0.234,37,6,1,0.027,0.069,True,False,False,False,0
+nutrition.pdf,p4_b9,paragraph,gold,A common mistake is to ignore variety and portion size. Readers who keep notes o,1.0,0.0,0.0,0.129,0.343,0.379,0.697,151,26,2,0.0,0.016,True,False,False,False,0
+nutrition.pdf,p4_b10,page_number,gold,4,0.82,0.0,0.0,0.496,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+history.pdf,p1_b0,heading,gold,Chapter 1: Local History Part 1,1.4,1.0,0.0,0.129,0.094,0.116,0.344,31,6,1,0.065,0.174,False,False,False,True,0
+history.pdf,p1_b1,paragraph,gold,Local History is an important subject for community groups. Many people study lo,1.0,0.0,0.0,0.129,0.127,0.16,0.698,176,29,2,0.0,0.028,True,False,False,False,0
+history.pdf,p1_b2,heading,gold,Local History in practice 1,1.1,1.0,0.0,0.129,0.17,0.188,0.23,27,5,1,0.037,0.091,False,False,False,False,0
+history.pdf,p1_b3,paragraph,gold,Section 1 looks at local history in more detail. Experts recommend starting with,1.0,0.0,0.0,0.129,0.194,0.227,0.718,158,25,2,0.006,0.015,True,False,False,False,0
+history.pdf,p1_b4,list,gold,• First point about trade routes and farming number 1,1.0,0.0,0.0,0.129,0.237,0.256,0.414,53,10,2,0.019,0.024,False,True,False,False,0
+history.pdf,p1_b5,list,gold,• Second point about how the town grew number 1,1.0,0.0,0.0,0.129,0.263,0.282,0.395,47,10,2,0.021,0.028,False,True,False,False,0
+history.pdf,p1_b6,list,gold,• Third point about community groups number 1,1.01,0.0,0.0,0.129,0.289,0.309,0.374,45,8,2,0.022,0.028,False,True,False,False,0
+history.pdf,p1_b7,paragraph,gold,A common mistake is to ignore trade routes and farming. Readers who keep notes o,1.0,0.0,0.0,0.129,0.315,0.348,0.739,145,26,2,0.0,0.017,True,False,False,False,0
+history.pdf,p1_b8,page_number,gold,Page 1 of 4,0.9,0.0,0.0,0.461,0.948,0.963,0.077,11,4,1,0.182,0.167,False,False,True,True,0
+history.pdf,p2_b0,heading,gold,Chapter 2: Local History Part 2,1.4,1.0,0.0,0.129,0.094,0.116,0.344,31,6,1,0.065,0.174,False,False,False,True,0
+history.pdf,p2_b1,paragraph,gold,Local History is an important subject for community groups. Many people study lo,1.0,0.0,0.0,0.129,0.127,0.16,0.698,176,29,2,0.0,0.028,True,False,False,False,0
+history.pdf,p2_b2,heading,gold,Local History in practice 2,1.1,1.0,0.0,0.129,0.17,0.188,0.23,27,5,1,0.037,0.091,False,False,False,False,0
+history.pdf,p2_b3,paragraph,gold,Section 2 looks at local history in more detail. Experts recommend starting with,1.0,0.0,0.0,0.129,0.194,0.227,0.718,158,25,2,0.006,0.015,True,False,False,False,0
+history.pdf,p2_b4,table,gold,Item Type Score,0.9,0.0,0.0,0.224,0.241,0.255,0.468,15,3,3,0.0,0.231,False,False,False,False,0
+history.pdf,p2_b5,table,gold,Alpha 2 Basic 20,0.9,0.0,0.0,0.224,0.262,0.277,0.445,16,4,3,0.188,0.2,False,False,False,False,0
+history.pdf,p2_b6,table,gold,Beta 2 Advanced 40,0.9,0.0,0.0,0.224,0.283,0.298,0.445,18,4,3,0.167,0.167,False,False,False,False,0
+history.pdf,p2_b7,caption,gold,Table 2: Sample scores for local history.,0.85,0.0,0.0,0.129,0.301,0.315,0.254,41,7,1,0.024,0.062,True,False,False,False,0
+history.pdf,p2_b8,paragraph,gold,A common mistake is to ignore trade routes and farming. Readers who keep notes o,1.0,0.0,0.0,0.129,0.327,0.36,0.739,145,26,2,0.0,0.017,True,False,False,False,0
+history.pdf,p2_b9,page_number,gold,Page 2 of 4,0.9,0.0,0.0,0.461,0.948,0.963,0.077,11,4,1,0.182,0.167,False,False,True,True,0
+history.pdf,p3_b0,heading,gold,Chapter 3: Local History Part 3,1.4,1.0,0.0,0.129,0.094,0.116,0.344,31,6,1,0.065,0.174,False,False,False,True,0
+history.pdf,p3_b1,paragraph,gold,Local History is an important subject for community groups. Many people study lo,1.0,0.0,0.0,0.129,0.127,0.16,0.698,176,29,2,0.0,0.028,True,False,False,False,0
+history.pdf,p3_b2,heading,gold,Local History in practice 3,1.1,1.0,0.0,0.129,0.17,0.188,0.23,27,5,1,0.037,0.091,False,False,False,False,0
+history.pdf,p3_b3,paragraph,gold,Section 3 looks at local history in more detail. Experts recommend starting with,1.0,0.0,0.0,0.129,0.194,0.227,0.718,158,25,2,0.006,0.015,True,False,False,False,0
+history.pdf,p3_b4,list,gold,• First point about trade routes and farming number 3,1.0,0.0,0.0,0.129,0.237,0.256,0.414,53,10,2,0.019,0.024,False,True,False,False,0
+history.pdf,p3_b5,list,gold,• Second point about how the town grew number 3,1.0,0.0,0.0,0.129,0.263,0.282,0.395,47,10,2,0.021,0.028,False,True,False,False,0
+history.pdf,p3_b6,list,gold,• Third point about community groups number 3,1.01,0.0,0.0,0.129,0.289,0.309,0.374,45,8,2,0.022,0.028,False,True,False,False,0
+history.pdf,p3_b7,paragraph,gold,A common mistake is to ignore trade routes and farming. Readers who keep notes o,1.0,0.0,0.0,0.129,0.315,0.348,0.739,145,26,2,0.0,0.017,True,False,False,False,0
+history.pdf,p3_b8,page_number,gold,Page 3 of 4,0.9,0.0,0.0,0.461,0.948,0.963,0.077,11,4,1,0.182,0.167,False,False,True,True,0
+history.pdf,p4_b0,heading,gold,Chapter 4: Local History Part 4,1.4,1.0,0.0,0.129,0.094,0.116,0.344,31,6,1,0.065,0.174,False,False,False,True,0
+history.pdf,p4_b1,paragraph,gold,Local History is an important subject for community groups. Many people study lo,1.0,0.0,0.0,0.129,0.127,0.16,0.698,176,29,2,0.0,0.028,True,False,False,False,0
+history.pdf,p4_b2,heading,gold,Local History in practice 4,1.1,1.0,0.0,0.129,0.17,0.188,0.23,27,5,1,0.037,0.091,False,False,False,False,0
+history.pdf,p4_b3,paragraph,gold,Section 4 looks at local history in more detail. Experts recommend starting with,1.0,0.0,0.0,0.129,0.194,0.227,0.718,158,25,2,0.006,0.015,True,False,False,False,0
+history.pdf,p4_b4,table,gold,Item Type Score,0.9,0.0,0.0,0.224,0.241,0.255,0.468,15,3,3,0.0,0.231,False,False,False,False,0
+history.pdf,p4_b5,table,gold,Alpha 4 Basic 40,0.9,0.0,0.0,0.224,0.262,0.277,0.445,16,4,3,0.188,0.2,False,False,False,False,0
+history.pdf,p4_b6,table,gold,Beta 4 Advanced 80,0.9,0.0,0.0,0.224,0.283,0.298,0.445,18,4,3,0.167,0.167,False,False,False,False,0
+history.pdf,p4_b7,caption,gold,Table 4: Sample scores for local history.,0.85,0.0,0.0,0.129,0.301,0.315,0.254,41,7,1,0.024,0.062,True,False,False,False,0
+history.pdf,p4_b8,paragraph,gold,A common mistake is to ignore trade routes and farming. Readers who keep notes o,1.0,0.0,0.0,0.129,0.327,0.36,0.739,145,26,2,0.0,0.017,True,False,False,False,0
+history.pdf,p4_b9,page_number,gold,Page 4 of 4,0.9,0.0,0.0,0.461,0.948,0.963,0.077,11,4,1,0.182,0.167,False,False,True,True,0
+energy.pdf,p1_b0,footer,gold,ENERGY BRIEF,0.9,0.0,0.0,0.119,0.041,0.054,0.109,12,2,1,0.0,1.0,False,False,False,True,0
+energy.pdf,p1_b1,heading,gold,CHAPTER 1: RENEWABLE ENERGY PART 1,1.2,1.0,0.0,0.129,0.095,0.115,0.411,34,6,1,0.059,1.0,False,False,False,True,0
+energy.pdf,p1_b2,paragraph,gold,Renewable Energy is an important subject for engineers and planners. Many people,1.0,0.0,0.0,0.129,0.126,0.174,0.736,187,29,3,0.0,0.026,True,False,False,False,0
+energy.pdf,p1_b3,heading,gold,RENEWABLE ENERGY IN PRACTICE 1,1.0,1.0,0.0,0.129,0.184,0.201,0.302,30,5,1,0.033,1.0,False,False,False,False,0
+energy.pdf,p1_b4,paragraph,gold,Section 1 looks at renewable energy in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.208,0.256,0.706,161,25,3,0.006,0.015,True,False,False,False,0
+energy.pdf,p1_b5,list,gold,• First point about weather and storage number 1,1.0,0.0,0.0,0.129,0.265,0.285,0.494,48,9,2,0.021,0.026,False,True,False,False,0
+energy.pdf,p1_b6,list,gold,• Second point about how power is produced number 1,1.0,0.0,0.0,0.129,0.291,0.311,0.524,51,10,2,0.02,0.025,False,True,False,False,0
+energy.pdf,p1_b7,list,gold,• Third point about engineers and planners number 1,1.0,0.0,0.0,0.129,0.318,0.337,0.524,51,9,2,0.02,0.024,False,True,False,False,0
+energy.pdf,p1_b8,paragraph,gold,A common mistake is to ignore weather and storage. Readers who keep notes on how,1.0,0.0,0.0,0.129,0.346,0.377,0.736,144,25,2,0.0,0.017,True,False,False,False,0
+energy.pdf,p1_b9,page_number,gold,- 1 -,0.9,0.0,0.0,0.477,0.95,0.963,0.045,5,3,1,0.2,0.0,False,True,False,True,0
+energy.pdf,p2_b0,footer,gold,ENERGY BRIEF,0.9,0.0,0.0,0.119,0.041,0.054,0.109,12,2,1,0.0,1.0,False,False,False,True,0
+energy.pdf,p2_b1,heading,gold,CHAPTER 2: RENEWABLE ENERGY PART 2,1.2,1.0,0.0,0.129,0.095,0.115,0.411,34,6,1,0.059,1.0,False,False,False,True,0
+energy.pdf,p2_b2,paragraph,gold,Renewable Energy is an important subject for engineers and planners. Many people,1.0,0.0,0.0,0.129,0.126,0.174,0.736,187,29,3,0.0,0.026,True,False,False,False,0
+energy.pdf,p2_b3,heading,gold,RENEWABLE ENERGY IN PRACTICE 2,1.0,1.0,0.0,0.129,0.184,0.201,0.302,30,5,1,0.033,1.0,False,False,False,False,0
+energy.pdf,p2_b4,paragraph,gold,Section 2 looks at renewable energy in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.208,0.256,0.706,161,25,3,0.006,0.015,True,False,False,False,0
+energy.pdf,p2_b5,table,gold,Item Type Score,0.9,0.0,0.0,0.224,0.271,0.284,0.474,15,3,3,0.0,0.231,False,False,False,False,0
+energy.pdf,p2_b6,table,gold,Alpha 2 Basic 20,0.9,0.0,0.0,0.224,0.292,0.305,0.447,16,4,3,0.188,0.2,False,False,False,False,0
+energy.pdf,p2_b7,table,gold,Beta 2 Advanced 40,0.9,0.0,0.0,0.224,0.313,0.327,0.447,18,4,3,0.167,0.167,False,False,False,False,0
+energy.pdf,p2_b8,caption,gold,Table 2: Sample scores for renewable energy.,0.85,0.0,0.0,0.129,0.331,0.344,0.377,44,7,1,0.023,0.057,True,False,False,False,0
+energy.pdf,p2_b9,paragraph,gold,A common mistake is to ignore weather and storage. Readers who keep notes on how,1.0,0.0,0.0,0.129,0.358,0.389,0.736,144,25,2,0.0,0.017,True,False,False,False,0
+energy.pdf,p2_b10,page_number,gold,- 2 -,0.9,0.0,0.0,0.477,0.95,0.963,0.045,5,3,1,0.2,0.0,False,True,False,True,0
+energy.pdf,p3_b0,footer,gold,ENERGY BRIEF,0.9,0.0,0.0,0.119,0.041,0.054,0.109,12,2,1,0.0,1.0,False,False,False,True,0
+energy.pdf,p3_b1,heading,gold,CHAPTER 3: RENEWABLE ENERGY PART 3,1.2,1.0,0.0,0.129,0.095,0.115,0.411,34,6,1,0.059,1.0,False,False,False,True,0
+energy.pdf,p3_b2,paragraph,gold,Renewable Energy is an important subject for engineers and planners. Many people,1.0,0.0,0.0,0.129,0.126,0.174,0.736,187,29,3,0.0,0.026,True,False,False,False,0
+energy.pdf,p3_b3,heading,gold,RENEWABLE ENERGY IN PRACTICE 3,1.0,1.0,0.0,0.129,0.184,0.201,0.302,30,5,1,0.033,1.0,False,False,False,False,0
+energy.pdf,p3_b4,paragraph,gold,Section 3 looks at renewable energy in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.208,0.256,0.706,161,25,3,0.006,0.015,True,False,False,False,0
+energy.pdf,p3_b5,list,gold,• First point about weather and storage number 3,1.0,0.0,0.0,0.129,0.265,0.285,0.494,48,9,2,0.021,0.026,False,True,False,False,0
+energy.pdf,p3_b6,list,gold,• Second point about how power is produced number 3,1.0,0.0,0.0,0.129,0.291,0.311,0.524,51,10,2,0.02,0.025,False,True,False,False,0
+energy.pdf,p3_b7,list,gold,• Third point about engineers and planners number 3,1.0,0.0,0.0,0.129,0.318,0.337,0.524,51,9,2,0.02,0.024,False,True,False,False,0
+energy.pdf,p3_b8,paragraph,gold,A common mistake is to ignore weather and storage. Readers who keep notes on how,1.0,0.0,0.0,0.129,0.346,0.377,0.736,144,25,2,0.0,0.017,True,False,False,False,0
+energy.pdf,p3_b9,page_number,gold,- 3 -,0.9,0.0,0.0,0.477,0.95,0.963,0.045,5,3,1,0.2,0.0,False,True,False,True,0
+energy.pdf,p4_b0,footer,gold,ENERGY BRIEF,0.9,0.0,0.0,0.119,0.041,0.054,0.109,12,2,1,0.0,1.0,False,False,False,True,0
+energy.pdf,p4_b1,heading,gold,CHAPTER 4: RENEWABLE ENERGY PART 4,1.2,1.0,0.0,0.129,0.095,0.115,0.411,34,6,1,0.059,1.0,False,False,False,True,0
+energy.pdf,p4_b2,paragraph,gold,Renewable Energy is an important subject for engineers and planners. Many people,1.0,0.0,0.0,0.129,0.126,0.174,0.736,187,29,3,0.0,0.026,True,False,False,False,0
+energy.pdf,p4_b3,heading,gold,RENEWABLE ENERGY IN PRACTICE 4,1.0,1.0,0.0,0.129,0.184,0.201,0.302,30,5,1,0.033,1.0,False,False,False,False,0
+energy.pdf,p4_b4,paragraph,gold,Section 4 looks at renewable energy in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.208,0.256,0.706,161,25,3,0.006,0.015,True,False,False,False,0
+energy.pdf,p4_b5,table,gold,Item Type Score,0.9,0.0,0.0,0.224,0.271,0.284,0.474,15,3,3,0.0,0.231,False,False,False,False,0
+energy.pdf,p4_b6,table,gold,Alpha 4 Basic 40,0.9,0.0,0.0,0.224,0.292,0.305,0.447,16,4,3,0.188,0.2,False,False,False,False,0
+energy.pdf,p4_b7,table,gold,Beta 4 Advanced 80,0.9,0.0,0.0,0.224,0.313,0.327,0.447,18,4,3,0.167,0.167,False,False,False,False,0
+energy.pdf,p4_b8,caption,gold,Table 4: Sample scores for renewable energy.,0.85,0.0,0.0,0.129,0.331,0.344,0.377,44,7,1,0.023,0.057,True,False,False,False,0
+energy.pdf,p4_b9,paragraph,gold,A common mistake is to ignore weather and storage. Readers who keep notes on how,1.0,0.0,0.0,0.129,0.358,0.389,0.736,144,25,2,0.0,0.017,True,False,False,False,0
+energy.pdf,p4_b10,page_number,gold,- 4 -,0.9,0.0,0.0,0.477,0.95,0.963,0.045,5,3,1,0.2,0.0,False,True,False,True,0
+finance.pdf,p1_b0,heading,gold,Chapter 1: Personal Finance Part 1,1.33,1.0,1.0,0.129,0.095,0.12,0.398,34,6,1,0.059,0.154,False,False,False,False,0
+finance.pdf,p1_b1,paragraph,gold,Personal Finance is an important subject for young families. Many people study p,1.0,0.0,0.0,0.129,0.13,0.189,0.734,183,29,3,0.0,0.026,True,False,False,False,0
+finance.pdf,p1_b2,heading,gold,Personal Finance in practice 1,1.0,1.0,1.0,0.129,0.201,0.219,0.256,30,5,1,0.033,0.08,False,False,False,False,0
+finance.pdf,p1_b3,paragraph,gold,Section 1 looks at personal finance in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.226,0.264,0.707,161,25,2,0.006,0.015,True,False,False,False,0
+finance.pdf,p1_b4,list,gold,1 First point about income and saving habits number 1,1.0,0.0,0.0,0.129,0.275,0.294,0.455,53,10,2,0.038,0.024,False,False,False,False,0
+finance.pdf,p1_b5,list,gold,2 Second point about how money is managed number 1,1.0,0.0,0.0,0.129,0.304,0.324,0.464,50,10,2,0.04,0.026,False,False,False,False,0
+finance.pdf,p1_b6,list,gold,3 Third point about young families number 1,1.0,0.0,0.0,0.129,0.334,0.353,0.379,43,8,2,0.047,0.029,False,False,False,False,0
+finance.pdf,p1_b7,paragraph,gold,A common mistake is to ignore income and saving habits. Readers who keep notes o,1.0,0.0,0.0,0.129,0.363,0.402,0.733,148,26,2,0.0,0.017,True,False,False,False,0
+finance.pdf,p1_b8,page_number,gold,1,0.75,0.0,0.0,0.873,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+finance.pdf,p2_b0,heading,gold,Chapter 2: Personal Finance Part 2,1.33,1.0,1.0,0.129,0.095,0.12,0.398,34,6,1,0.059,0.154,False,False,False,False,0
+finance.pdf,p2_b1,paragraph,gold,Personal Finance is an important subject for young families. Many people study p,1.0,0.0,0.0,0.129,0.13,0.189,0.734,183,29,3,0.0,0.026,True,False,False,False,0
+finance.pdf,p2_b2,heading,gold,Personal Finance in practice 2,1.0,1.0,1.0,0.129,0.201,0.219,0.256,30,5,1,0.033,0.08,False,False,False,False,0
+finance.pdf,p2_b3,paragraph,gold,Section 2 looks at personal finance in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.226,0.264,0.707,161,25,2,0.006,0.015,True,False,False,False,0
+finance.pdf,p2_b4,table,gold,Item Type Score,0.92,0.0,0.0,0.224,0.279,0.296,0.471,15,3,3,0.0,0.231,False,False,False,False,0
+finance.pdf,p2_b5,table,gold,Alpha 2 Basic 20,0.92,0.0,0.0,0.224,0.3,0.317,0.447,16,4,3,0.188,0.2,False,False,False,False,0
+finance.pdf,p2_b6,table,gold,Beta 2 Advanced 40 Table 2: Sample scores for personal finance.,0.89,0.0,0.0,0.129,0.321,0.356,0.542,63,11,4,0.063,0.085,True,False,False,False,0
+finance.pdf,p2_b7,paragraph,gold,A common mistake is to ignore income and saving habits. Readers who keep notes o,1.0,0.0,0.0,0.129,0.365,0.404,0.733,148,26,2,0.0,0.017,True,False,False,False,0
+finance.pdf,p2_b8,page_number,gold,2,0.75,0.0,0.0,0.873,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+finance.pdf,p3_b0,heading,gold,Chapter 3: Personal Finance Part 3,1.33,1.0,1.0,0.129,0.095,0.12,0.398,34,6,1,0.059,0.154,False,False,False,False,0
+finance.pdf,p3_b1,paragraph,gold,Personal Finance is an important subject for young families. Many people study p,1.0,0.0,0.0,0.129,0.13,0.189,0.734,183,29,3,0.0,0.026,True,False,False,False,0
+finance.pdf,p3_b2,heading,gold,Personal Finance in practice 3,1.0,1.0,1.0,0.129,0.201,0.219,0.256,30,5,1,0.033,0.08,False,False,False,False,0
+finance.pdf,p3_b3,paragraph,gold,Section 3 looks at personal finance in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.226,0.264,0.707,161,25,2,0.006,0.015,True,False,False,False,0
+finance.pdf,p3_b4,list,gold,1 First point about income and saving habits number 3,1.0,0.0,0.0,0.129,0.275,0.294,0.455,53,10,2,0.038,0.024,False,False,False,False,0
+finance.pdf,p3_b5,list,gold,2 Second point about how money is managed number 3,1.0,0.0,0.0,0.129,0.304,0.324,0.464,50,10,2,0.04,0.026,False,False,False,False,0
+finance.pdf,p3_b6,list,gold,3 Third point about young families number 3,1.0,0.0,0.0,0.129,0.334,0.353,0.379,43,8,2,0.047,0.029,False,False,False,False,0
+finance.pdf,p3_b7,paragraph,gold,A common mistake is to ignore income and saving habits. Readers who keep notes o,1.0,0.0,0.0,0.129,0.363,0.402,0.733,148,26,2,0.0,0.017,True,False,False,False,0
+finance.pdf,p3_b8,page_number,gold,3,0.75,0.0,0.0,0.873,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0
+finance.pdf,p4_b0,heading,gold,Chapter 4: Personal Finance Part 4,1.33,1.0,1.0,0.129,0.095,0.12,0.398,34,6,1,0.059,0.154,False,False,False,False,0
+finance.pdf,p4_b1,paragraph,gold,Personal Finance is an important subject for young families. Many people study p,1.0,0.0,0.0,0.129,0.13,0.189,0.734,183,29,3,0.0,0.026,True,False,False,False,0
+finance.pdf,p4_b2,heading,gold,Personal Finance in practice 4,1.0,1.0,1.0,0.129,0.201,0.219,0.256,30,5,1,0.033,0.08,False,False,False,False,0
+finance.pdf,p4_b3,paragraph,gold,Section 4 looks at personal finance in more detail. Experts recommend starting w,1.0,0.0,0.0,0.129,0.226,0.264,0.707,161,25,2,0.006,0.015,True,False,False,False,0
+finance.pdf,p4_b4,table,gold,Item Type Score,0.92,0.0,0.0,0.224,0.279,0.296,0.471,15,3,3,0.0,0.231,False,False,False,False,0
+finance.pdf,p4_b5,table,gold,Alpha 4 Basic 40,0.92,0.0,0.0,0.224,0.3,0.317,0.447,16,4,3,0.188,0.2,False,False,False,False,0
+finance.pdf,p4_b6,table,gold,Beta 4 Advanced 80 Table 4: Sample scores for personal finance.,0.89,0.0,0.0,0.129,0.321,0.356,0.542,63,11,4,0.063,0.085,True,False,False,False,0
+finance.pdf,p4_b7,paragraph,gold,A common mistake is to ignore income and saving habits. Readers who keep notes o,1.0,0.0,0.0,0.129,0.365,0.404,0.733,148,26,2,0.0,0.017,True,False,False,False,0
+finance.pdf,p4_b8,page_number,gold,4,0.75,0.0,0.0,0.873,0.948,0.963,0.008,1,1,1,1.0,0.0,False,False,True,True,0

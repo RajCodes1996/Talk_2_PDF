@@ -1,0 +1,3 @@
+questions=22 docs=7 chunks={'test_document_5pages': 5, 'sam': 1, 'mixed_test_3pages': 9, 'nutrition': 8, 'energy': 8, 'history': 8, 'finance': 8}
+alpha=0.5: hit@1=1.000 hit@3=1.000 MRR=1.000
+not at rank 1, alpha=0.5 (doc | question | rank | top1 page):

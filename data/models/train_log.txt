@@ -1,0 +1,17 @@
+docs=4 rows=158 macro-F1 by model: {'logreg': 0.74, 'rf': 0.973} -> chose rf
+              precision    recall  f1-score   support
+
+     caption       0.75      1.00      0.86         6
+      footer       1.00      1.00      1.00         8
+     heading       1.00      1.00      1.00        32
+        list       1.00      1.00      1.00        24
+ page_number       1.00      1.00      1.00        16
+   paragraph       1.00      1.00      1.00        48
+       table       1.00      0.92      0.96        24
+
+    accuracy                           0.99       158
+   macro avg       0.96      0.99      0.97       158
+weighted avg       0.99      0.99      0.99       158
+
+label counts: {np.str_('footer'): 8, np.str_('heading'): 32, np.str_('paragraph'): 48, np.str_('list'): 24, np.str_('page_number'): 16, np.str_('table'): 24, np.str_('caption'): 6}
+baseline comparison skipped: ImportError: cannot import name 'is_skipped' from 'src.tts.reader' (C:\Users\netware\Desktop\vision\src\tts\reader.py)
