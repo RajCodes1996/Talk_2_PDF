@@ -28,6 +28,7 @@ def build_chunks(doc, max_words=120, min_words=15):
     Each chunk: id, heading, heading_id, text (body only), page_start, page_end, block_ids, n_words."""
     chunks, cur = [], None
     head, head_id = "", None
+    body_seen = True  # False right after a heading: consecutive headings are merged into one
 
     def flush():
         nonlocal cur
@@ -49,10 +50,16 @@ def build_chunks(doc, max_words=120, min_words=15):
                 continue
             if _heading(b):
                 flush()
-                head, head_id = re.sub(r"\s+", " ", text), b.get("id")
+                t = re.sub(r"\s+", " ", text)
+                if body_seen:
+                    head, head_id = t, b.get("id")
+                else:  # e.g. column headings listed before their bodies (sam.pdf)
+                    head = f"{head}; {t}"
+                body_seen = False
                 continue
             for s in split_sentences(text):
                 w = len(s.split())
+                body_seen = True
                 if cur is None:
                     cur = new()
                 if cur["n"] >= min_words and cur["n"] + w > max_words:
@@ -77,4 +84,3 @@ def build_chunks(doc, max_words=120, min_words=15):
     for i, c in enumerate(out):
         c["id"] = f"c{i}"
     return out
-

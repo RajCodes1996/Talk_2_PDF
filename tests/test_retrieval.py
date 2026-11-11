@@ -81,3 +81,15 @@ def test_edge_cases_and_alpha_modes_and_roundtrip(tmp_path):
     with pytest.raises(ValueError):
         Index([])
 
+def test_consecutive_headings_merge_and_stay_searchable():
+    doc = {"pages": [{"page": 1, "blocks": [
+        _b(1, 0, "Overview", 2.0),
+        _b(1, 1, "The framework has three parts that guide responsible use of AI tools in daily work and study."),
+        _b(1, 2, "Creation Diligence", 1.6), _b(1, 3, "Transparency Diligence", 1.6), _b(1, 4, "Deployment Diligence", 1.6),
+        _b(1, 5, "Being thoughtful about which systems you use and why you choose them for a task."),
+        _b(1, 6, "Being honest about the role of AI in your work with everyone who relies on it."),
+        _b(1, 7, "Taking responsibility for verifying and vouching for any output you share with others.")]}]}
+    ch = build_chunks(doc)
+    assert len(ch) == 2
+    assert ch[1]["heading"] == "Creation Diligence; Transparency Diligence; Deployment Diligence"
+    assert Index(ch).query("What is transparency diligence?")[0]["chunk_id"] == "c1"

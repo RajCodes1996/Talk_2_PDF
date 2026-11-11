@@ -1,6 +1,4 @@
-questions=22 docs=7 chunks={'test_document_5pages': 5, 'sam': 2, 'mixed_test_3pages': 8, 'nutrition': 4, 'energy': 4, 'history': 4, 'finance': 4}
-alpha=0.5: hit@1=0.864 hit@3=1.000 MRR=0.932
+questions=17 docs=6 chunks={'sam': 2, 'mixed_test_3pages': 8, 'nutrition': 4, 'energy': 4, 'history': 4, 'finance': 4}
+alpha=0.5: hit@1=0.941 hit@3=1.000 MRR=0.971
 not at rank 1, alpha=0.5 (doc | question | rank | top1 page):
-  sam | What does creation diligence involve? | 2 | 1
-  sam | What is transparency diligence? | 2 | 1
   sam | Who holds the copyright for the 4Ds document? | 2 | 1

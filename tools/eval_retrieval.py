@@ -16,6 +16,7 @@ p.add_argument("--samples", default="data/samples")
 p.add_argument("--alpha", type=float, default=0.5)
 p.add_argument("--sweep", action="store_true")
 p.add_argument("--classify", action="store_true")
+p.add_argument("--exclude", nargs="*", default=[], help="doc names to leave out (e.g. synthetic files)")
 p.add_argument("--out", default="data/eval/results.txt")
 a = p.parse_args()
 
@@ -28,7 +29,8 @@ def load_doc(name):
     return extract_document(str(Path(a.samples) / f"{name}.pdf"))
 
 
-rows = [r for r in csv.DictReader(open(a.csv, encoding="utf-8")) if r["question"].strip()]
+rows = [r for r in csv.DictReader(open(a.csv, encoding="utf-8"))
+        if r["question"].strip() and r["doc"] not in a.exclude]
 docs, idx = {}, {}
 for r in rows:
     if r["doc"] not in docs:
@@ -70,4 +72,3 @@ lines.append(f"not at rank 1, alpha={al} (doc | question | rank | top1 page):")
 lines += [f"  {d} | {q[:60]} | {rk} | {pg}" for d, q, rk, pg in misses]
 print("\n".join(lines))
 Path(a.out).write_text("\n".join(lines), encoding="utf-8")
-
