@@ -1,0 +1,71 @@
+text,label
+What exactly is a screen reader?,definition
+Could you tell me the meaning of alt text?,definition
+What do they mean by compound interest?,definition
+Define the term carbon footprint.,definition
+What's OCR?,definition
+Explain the term inflation.,definition
+What is NVDA?,definition
+What does GDP stand for?,definition
+Meaning of dietary fibre?,definition
+What is meant by renewable energy?,definition
+How many words per minute do experts listen at?,number
+What contrast ratio is recommended?,number
+How long does the battery last?,number
+What percentage of adults are affected?,number
+How much does it cost?,number
+How many cells does a braille display have?,number
+What is the speech rate for beginners?,number
+By how much did prices rise?,number
+How many pages does the report have?,number
+What was the total revenue in 2023?,number
+Who is the author of this report?,wh_fact
+Which year did the treaty get signed?,wh_fact
+Where was the conference held?,wh_fact
+Who funds the project?,wh_fact
+When was NVDA released?,wh_fact
+Name the company that makes JAWS.,wh_fact
+Which organisation published these guidelines?,wh_fact
+Where do the authors work?,wh_fact
+What year did the war end?,wh_fact
+Who are the people mentioned in the history section?,wh_fact
+Is NVDA free to use?,yes_no
+Does the document mention braille?,yes_no
+Can I use it without internet?,yes_no
+Are headings read aloud?,yes_no
+Was the policy approved?,yes_no
+Do beginners prefer slower speech?,yes_no
+Is the report from 2023?,yes_no
+Should large text have a lower contrast ratio?,yes_no
+Has the budget increased?,yes_no
+Will it work on Linux?,yes_no
+Summarise the whole thing for me.,summary
+What's this file about?,summary
+Quick overview please.,summary
+Give me the key points of the document.,summary
+Tell me the main idea.,summary
+Sum up chapter two.,summary
+"Briefly, what does it cover?",summary
+What are the highlights?,summary
+Short summary of the finance section.,summary
+Can you recap what this text says?,summary
+Read page 12 to me.,page_lookup
+Take me to the third page.,page_lookup
+What's written on page 7?,page_lookup
+Open page 2.,page_lookup
+Go back to page 1.,page_lookup
+Jump to the last page.,page_lookup
+Show me the second page.,page_lookup
+page five,page_lookup
+Start from page 9.,page_lookup
+What does page 4 contain?,page_lookup
+Why does contrast matter for low vision users?,other
+How do screen readers handle images?,other
+Explain how OCR works.,other
+What are the pros and cons of braille displays?,other
+Compare NVDA and JAWS.,other
+How should I configure the voice speed?,other
+Why did inflation rise?,other
+What can I do about eye strain?,other
+Tell me more about the Industrial Revolution.,other
+What are the benefits of solar power?,other

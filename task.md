@@ -1,40 +1,28 @@
-# task_day7.md: Buffer day (diagnose, error report, optional context features, commit)
+# task_day9.md: Question-type classifier and routing plan
 
-Goal: close HANDOVER open items 1 and 2, retrain on the real labels, pick the best variant by measured F1, commit. Nothing here adds product features beyond the optional context switch.
+Goal: `plan(question)` returns `{type, margin, page, handler}` so Day 10 can send each question to the right answer handler. Offline, scikit-learn only (TF-IDF word + char n-grams, LinearSVC). Seven types: definition, wh_fact (who/when/where/which), number, yes_no, summary, page_lookup, other. (`other` is added to the handover's six: why/how/compare questions would otherwise be forced into wrong types.)
 
 ## Rules (override AGENTS.md where they conflict)
 - Work in `C:\Users\netware\Desktop\vision`, run from project root only.
 - FIRST: `python -c "import sys; print(sys.version); print(sys.executable)"` must show **3.11.9** and a path inside `vision\.venv`. Otherwise STOP and report.
-- Forbidden: uv/poetry/conda, recreating `.venv`, creating `pyproject.toml`/`uv.lock`, `import fitz`. Use `python -m pytest`, `python -m pip`.
-- Edit ONLY the files listed in Part B. Do NOT edit `tests/test_ocr.py`, `tools/label.py` or any other file. Do NOT revert anything found in Part A; report it.
-- AGENTS.md "narrowest test" rule is waived for the two full-suite runs (Part A3, Part E) because the task requires them. Everywhere else keep output short: pipe to `Select-Object -Last N` as written. Never paste more than the requested lines.
-- Interactive labelling (`tools.label`) is done by the user, never by you.
-- Report REAL output. "Deviations" must list every file you touched or created that is not named here.
+- Forbidden: uv/poetry/conda, recreating `.venv`, `pyproject.toml`/`uv.lock`, `import fitz`, new pip packages, any network/API/LLM call. Use `python -m pytest`, `python -m pip`.
+- Create/edit ONLY the files named in this task. Never create, regenerate or overwrite any PDF in `data\samples`.
+- Output discipline: pipe long output through `Select-Object -First/-Last N` as written. Full-suite runs are exempt from the "narrowest test" rule.
+- Report REAL output. Do not write "all tests exist and pass" unless the per-file counts below prove it. "Deviations" must list every file touched or created beyond this task.
 - If a step fails twice: stop, report the last 20 lines of the error plus 2 options.
 
-## Part A: Diagnose (read-only, no code changes)
-A1. Python check above.
-A2. `python -m pytest --collect-only -q | Select-Object -Last 35`
-    Expected after Day 6: **24 tests** (2 smoke, 3 extractor, 6 OCR, 8 reader, 3 labeling, 2 classifier). Report per-file counts.
-A3. `python -m pytest -q -rs --durations=5 | Select-Object -Last 20`
-    Expected: all pass, 10 to 40 s total (earlier runs were 10 to 40 s; one report said 330 s with 16 passed). Report the summary line, any SKIPPED reasons, and the 5 slowest tests.
-A4. Side effects:
+## Part A: Preflight (read-only)
 ```
-git status --short
-git log --oneline -5
-Test-Path pyproject.toml, uv.lock
-rg -n "CAPTION_RE" tools/label.py
+python -m pytest tests/test_retrieval.py tests/test_classifier.py -q | Select-Object -Last 3
+git status --short | Select-Object -First 10
 ```
-    Expected: `Test-Path` returns False, False. Report what `CAPTION_RE` is now (original was `^(figure|fig\.|table)\s*\d+`).
-If A2 or A3 shows missing/skipped OCR tests or a very slow run, do NOT fix: report the cause (skip reason, Tesseract path, slowest test) plus 2 options, then continue with Part B.
+Expected: **12 passed** (9 + 3) after task_day8b.md; clean working tree. If not, STOP and report.
 
-## Part B: Replace two files, extend the tests
-Prerequisite: `src/nlp/block_classifier.py` from Day 6 exists. If not, STOP.
-Changes: `load_labels`/`train` gain `manual_only` and `context` options (context = previous/next block features, off by default); `predict` reads the `context` flag stored in the model file; `tools/train_classifier.py` gains `--manual-only`, `--context`, `--out`, a confusion matrix and `data/models/errors.csv` (misclassified rows).
+## Part B: Create files (`src/nlp/` and `tools/` already exist; create `data\questions` if missing)
 
-### `src/nlp/block_classifier.py` (full replacement)
+### `src/nlp/question_classifier.py`
 ```python
-"""Block classifier: predicts heading/paragraph/list/table/footer/page_number/caption."""
+"""Question-type classifier (TF-IDF word+char n-grams + LinearSVC) and page-number parsing."""
 import csv
 import re
 from pathlib import Path
@@ -42,324 +30,375 @@ from pathlib import Path
 import joblib
 import numpy as np
 
-LABELS = ["heading", "paragraph", "list", "table", "footer", "page_number", "caption"]
-FEATURES = ["size_ratio", "bold_ratio", "italic_ratio", "rel_x0", "rel_y0", "rel_y1",
-            "rel_width", "n_chars", "n_words", "n_lines", "digit_ratio", "upper_ratio",
-            "ends_with_period", "starts_with_bullet", "looks_like_page_number",
-            "repeated_margin", "is_ocr"]
-MODEL_PATH = Path("data/models/block_classifier.joblib")
-SEED = 42
+LABELS = ["definition", "wh_fact", "number", "yes_no", "summary", "page_lookup", "other"]
+MODEL_PATH = Path("data/models/question_clf.joblib")
+MIN_MARGIN = 0.1  # below this top1-top2 margin the type falls back to "other" (from heldout table)
+# Day 10 handlers keyed by type (names only; handlers come on Day 10)
+ROUTES = {"definition": "define", "wh_fact": "fact", "number": "number", "yes_no": "yes_no",
+          "summary": "summarize", "page_lookup": "page", "other": "passages"}
+
+_NUMW = {w: i for i, w in enumerate(
+    "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
+    "sixteen seventeen eighteen nineteen twenty".split())}
+_ORD = {w: i + 1 for i, w in enumerate(
+    "first second third fourth fifth sixth seventh eighth ninth tenth".split())}
 
 
-def _f(v):
-    if isinstance(v, str):
-        v = v.strip()
-        if v.lower() in ("true", "false"):
-            return 1.0 if v.lower() == "true" else 0.0
-        return float(v) if v else 0.0
-    return float(v or 0)
+def normalize(q):
+    return re.sub(r"\d+", " 0 ", q.lower().strip())
 
 
-def block_features(block):
-    row = dict(block)
-    row.setdefault("is_ocr", block.get("source") == "ocr")
-    return [_f(row.get(k, 0)) for k in FEATURES]
+def make_pipeline():
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.pipeline import FeatureUnion, make_pipeline as mk
+    from sklearn.svm import LinearSVC
+    feats = FeatureUnion([
+        ("w", TfidfVectorizer(preprocessor=normalize, token_pattern=r"(?u)\b\w+\b",
+                              ngram_range=(1, 2), sublinear_tf=True)),
+        ("c", TfidfVectorizer(preprocessor=normalize, analyzer="char_wb",
+                              ngram_range=(2, 5), sublinear_tf=True))])
+    return mk(feats, LinearSVC(C=0.5, class_weight="balanced", random_state=42))
 
 
-CTX_KEYS = ["size_ratio", "rel_y0", "n_words", "starts_with_bullet", "bold_ratio"]
-_CTX_IDX = [FEATURES.index(k) for k in CTX_KEYS]
+def load_csv(path):
+    with open(path, encoding="utf-8", newline="") as fh:
+        rows = [r for r in csv.DictReader(fh) if r["label"] in LABELS and r["text"].strip()]
+    return [r["text"] for r in rows], [r["label"] for r in rows]
 
 
-def add_context(X, groups):
-    """Append prev/next-block features (+ is_first/is_last flags). Rows must be in reading
-    order with each group (doc, page) contiguous. Neighbours are taken within the group."""
-    n, k = len(X), len(_CTX_IDX)
-    prev, nxt = np.zeros((n, k + 1)), np.zeros((n, k + 1))
-    for i in range(n):
-        if i > 0 and groups[i - 1] == groups[i]:
-            prev[i, :k] = X[i - 1, _CTX_IDX]
-        else:
-            prev[i, k] = 1
-        if i < n - 1 and groups[i + 1] == groups[i]:
-            nxt[i, :k] = X[i + 1, _CTX_IDX]
-        else:
-            nxt[i, k] = 1
-    return np.hstack([X, prev, nxt])
-
-
-def _order(r, i):
-    m = re.match(r"p(\d+)_b(\d+)", r["block_id"])
-    return (r["doc"], int(m.group(1)), int(m.group(2))) if m else (r["doc"], 0, i)
-
-
-def load_labels(csv_path, manual_only=False, context=False):
-    """Returns X, y, docs, how, rows (sorted in reading order; rows kept for error reports)."""
-    with open(csv_path, encoding="utf-8", newline="") as fh:
-        rows = [r for r in csv.DictReader(fh) if r["label"] in LABELS]
-    if manual_only:
-        rows = [r for r in rows if r["how"] in ("gold", "manual")]
-    rows = [r for _, r in sorted(((_order(r, i), r) for i, r in enumerate(rows)),
-                                 key=lambda t: t[0])]
-    X = np.array([[_f(r[k]) for k in FEATURES] for r in rows])
-    if context:
-        X = add_context(X, [_order(r, 0)[:2] for r in rows])
-    return (X, np.array([r["label"] for r in rows]), np.array([r["doc"] for r in rows]),
-            np.array([r["how"] for r in rows]), rows)
-
-
-def make_models():
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.pipeline import make_pipeline
-    from sklearn.preprocessing import StandardScaler
-    return {
-        "logreg": make_pipeline(StandardScaler(), LogisticRegression(
-            class_weight="balanced", max_iter=3000, random_state=SEED)),
-        "rf": RandomForestClassifier(n_estimators=300, class_weight="balanced",
-                                     random_state=SEED, n_jobs=1),
-    }
-
-
-def train(csv_path, out_path=MODEL_PATH, log=print, manual_only=False, context=False):
-    """Grouped-by-document CV picks the model; final model is fit on all rows."""
-    from sklearn.metrics import classification_report, f1_score
-    from sklearn.model_selection import GroupKFold, cross_val_predict
-    X, y, docs, how, rows = load_labels(csv_path, manual_only, context)
-    n_docs = len(set(docs))
-    if n_docs < 2:
-        raise ValueError("Need at least 2 documents for a by-document split")
-    cv = GroupKFold(n_splits=min(5, n_docs))
-    best, best_f1, best_pred, report = None, -1, None, {}
-    for name, m in make_models().items():
-        pred = cross_val_predict(m, X, y, groups=docs, cv=cv)
-        f1 = f1_score(y, pred, average="macro", zero_division=0)
-        report[name] = round(f1, 3)
-        if f1 > best_f1:
-            best, best_f1, best_pred = name, f1, pred
-    log(f"docs={n_docs} rows={len(y)} manual_only={manual_only} context={context} macro-F1 by model: {report} -> chose {best}")
-    log(classification_report(y, best_pred, zero_division=0))
-    model = make_models()[best].fit(X, y)
+def train(train_csv, out_path=MODEL_PATH):
+    X, y = load_csv(train_csv)
+    m = make_pipeline().fit(X, y)
     Path(out_path).parent.mkdir(parents=True, exist_ok=True)
-    joblib.dump({"model": model, "features": FEATURES, "labels": LABELS, "name": best,
-                 "context": context}, out_path)
-    return {"best": best, "macro_f1": best_f1, "pred": best_pred, "y": y, "rows": rows}
+    joblib.dump(m, out_path)
+    return m
 
 
 _cache = {}
 
 
 def load_model(path=MODEL_PATH):
-    p = str(path)
-    if p not in _cache:
-        _cache[p] = joblib.load(p)
-    return _cache[p]
+    if str(path) not in _cache:
+        _cache[str(path)] = joblib.load(path)
+    return _cache[str(path)]
 
 
-def predict(blocks, model_path=MODEL_PATH):
-    """Adds 'label' and 'label_conf' to each block dict (in place) and returns the list."""
-    if not blocks:
-        return blocks
-    bundle = load_model(model_path)
-    m = bundle["model"]
-    X = np.array([block_features(b) for b in blocks])
-    if bundle.get("context"):  # blocks = one page, in reading order
-        X = add_context(X, [0] * len(blocks))
-    labels = m.predict(X)
-    conf = m.predict_proba(X).max(axis=1) if hasattr(m, "predict_proba") else [1.0] * len(blocks)
-    for b, l, c in zip(blocks, labels, conf):
-        b["label"], b["label_conf"] = str(l), round(float(c), 3)
-    return blocks
+def predict(question, model=None, min_margin=None):
+    """-> (label, margin). Low margin falls back to 'other'."""
+    m = model or load_model()
+    mm = MIN_MARGIN if min_margin is None else min_margin
+    s = m.decision_function([question])[0]
+    order = np.argsort(-s)
+    margin = float(s[order[0]] - s[order[1]])
+    label = str(m.classes_[order[0]])
+    return (label if margin >= mm else "other"), round(margin, 3)
 
 
-def classify_document(doc, model_path=MODEL_PATH):
-    """Annotate every block of an extractor-JSON dict; Reader then uses block['label']."""
-    for page in doc["pages"]:
-        predict(page["blocks"], model_path)
-    return doc
+def extract_page(q):
+    """Page number named in a question: int, -1 for 'last page', None if none found."""
+    t = q.lower()
+    if re.search(r"\blast page\b|\bfinal page\b", t):
+        return -1
+    m = re.search(r"\bpage\s*(?:no\.?|number|#)?\s*(\d+)\b|\bp\.?\s*(\d+)\b", t)
+    if m:
+        return int(m.group(1) or m.group(2))
+    m = re.search(r"\bpage\s+(" + "|".join(_NUMW) + r")\b", t)
+    if m:
+        return _NUMW[m.group(1)]
+    m = re.search(r"\b(" + "|".join(_ORD) + r")\s+page\b", t)
+    return _ORD[m.group(1)] if m else None
+
+
+def plan(question, model=None, min_margin=None):
+    label, margin = predict(question, model, min_margin)
+    page = extract_page(question)
+    if label == "page_lookup" and page is None:
+        label = "other"  # no page named: cannot navigate
+    return {"type": label, "margin": margin, "page": page, "handler": ROUTES[label]}
+
+
+if __name__ == "__main__":
+    import sys
+    print(plan(" ".join(sys.argv[1:])))
 ```
-### `tools/train_classifier.py` (full replacement)
+### `tools/make_question_data.py`
 ```python
-"""python -m tools.train_classifier [--csv PATH] [--manual-only] [--context] [--out PATH]
-Trains (grouped-by-doc CV), prints per-class report + confusion matrix, compares with Reader
-heuristics, writes data/models/train_log.txt and data/models/errors.csv (misclassified rows)."""
-import argparse
+"""python -m tools.make_question_data  -> data/questions/train.csv and heldout.csv (deterministic).
+train = templates x topics + hand-written; heldout = 70 separate hand-written questions (10 per type).
+Labelling rules: number = asks for a quantity/amount/duration/ratio/count; definition = 'what is <concept>';
+wh_fact = who/when/where/which/what year; yes_no = starts with an auxiliary verb; summary = overview of the
+whole document or a section; page_lookup = names a page to go to/read; other = why/how/compare/explain/open."""
 import csv
+import random
+from pathlib import Path
+
+T = ["a screen reader", "a braille display", "contrast ratio", "speech rate", "OCR", "text-to-speech", "alt text",
+     "heading structure", "photosynthesis", "inflation", "renewable energy", "a solar panel", "a carbon footprint",
+     "vitamin D", "dietary fibre", "the Industrial Revolution", "compound interest", "a mortgage",
+     "the budget deficit", "the Treaty of Versailles", "machine learning", "a neural network", "NVDA", "the keyboard shortcut",
+     "a hash function", "the water cycle", "GDP", "a bond", "protein", "wind power"]
+PEOPLE = ["the author", "the report", "the policy", "the study", "the guidelines", "the treaty", "the project", "the survey"]
+EVENTS = ["the war end", "the law pass", "the merger happen", "the experiment take place", "the conference start",
+          "prices rise", "the factory open", "the study begin"]
+PLACES = ["the headquarters", "the lab", "the conference", "the factory", "the museum", "the signing", "the trial", "the office"]
+SECTIONS = ["finance", "history", "nutrition", "energy", "accessibility", "methods", "results", "introduction", "keyboard navigation"]
+
+
+def pick(rng, templates, n, slots):
+    out = set()
+    while len(out) < n:
+        t = rng.choice(templates)
+        out.add(t.format(**{k: rng.choice(v) for k, v in slots.items()}))
+    return sorted(out)
+
+
+def build_train(rng):
+    d = {}
+    d["definition"] = pick(rng, [
+        "What is {t}?", "What is {t}", "Define {t}.", "What does {t} mean?", "Tell me what {t} is.", "What is meant by {t}?",
+        "Give me a definition of {t}.", "Can you define {t}?", "What exactly is {t}?", "what's {t}", "Please define {t}",
+        "What do you mean by {t}?"], 40, {"t": T}) + [
+        "What does WCAG stand for?", "What does the abbreviation OCR stand for?", "Meaning of the word fibre?",
+        "What is the definition of inflation?", "Define the term GDP", "What do they mean by heading levels?",
+        "What is the meaning of alt text?", "What is a refreshable braille display?", "Explain the term compound interest."]
+    d["wh_fact"] = pick(rng, [
+        "Who wrote {p}?", "Who is responsible for {p}?", "Who founded the company behind {t}?", "Who invented {t}?",
+        "When was {t} introduced?", "When did {e}?", "Where was {pl} located?", "Where is {pl}?", "Which company makes {t}?",
+        "In what year was {t} first released?", "Which organisation published {p}?", "Who funded {p}?",
+        "Where can I find {t}?", "When was {p} published?", "Who are the authors of {p}?", "Which country introduced {t}?",
+        "What year did {e}?", "Where did {e}?"], 44, {"t": T, "p": PEOPLE, "e": EVENTS, "pl": PLACES}) + [
+        "Who is the director?", "Name the author of this report.", "Which city hosted the event?", "Whom did they interview?",
+        "When did it all start?", "Who is quoted in the introduction?"]
+    d["number"] = pick(rng, [
+        "How many words per minute do {w} prefer?", "How many {u} are there in {t}?", "How much does {t} cost?",
+        "What percentage of {x} was reported?", "How long does {t} take?", "How many {u} does {p} mention?",
+        "What is the recommended {m}?", "What was the total {m} in the report?", "How many people took part in {p}?",
+        "By how much did {m} change?", "How high is the {m}?", "What is the average {m}?", "How many pages does {p} have?",
+        "What is the ratio required for {t}?", "How large is the {m}?", "How big was the {m}?"], 44,
+        {"w": ["beginners", "experts", "children", "most users"], "u": ["cells", "steps", "chapters", "examples", "countries", "tables"],
+         "t": T, "p": PEOPLE, "x": ["adults", "students", "households", "voters", "patients"],
+         "m": ["speech rate", "contrast ratio", "budget", "interest rate", "growth rate", "sample size", "price", "temperature"]}) + [
+        "How many cells does a typical braille display have?", "What is the minimum contrast ratio for normal text?",
+        "How much did the deficit grow in 2022?", "How many words per minute is considered fast?",
+        "What was the inflation rate last year?", "How many hours of sunlight are needed?"]
+    d["yes_no"] = pick(rng, [
+        "Is {t} free?", "Does {t} support keyboard navigation?", "Are {t} and {u} the same thing?", "Can {t} be used offline?",
+        "Should beginners use {t}?", "Is {t} mentioned in the document?", "Was {t} widely adopted?", "Do I need {t}?",
+        "Has {t} changed recently?", "Will {t} work on Windows?", "Is {t} required by law?", "Did {p} mention {t}?",
+        "Does {p} recommend {t}?", "Is {t} open source?", "Are there any limits on {t}?", "Could {t} be replaced?"], 44,
+        {"t": T, "u": T, "p": PEOPLE}) + [
+        "Is it free?", "Does it work offline?", "Is this document about finance?", "Are headings read aloud?",
+        "Can I use it with a keyboard only?", "Was the policy approved?"]
+    d["summary"] = pick(rng, [
+        "Summarize this document.", "Give me a summary.", "What is this document about?", "What are the main points?",
+        "Give me an overview of this document.", "Can you sum up the document?", "What is the gist of this?",
+        "Tell me briefly what this is about.", "TL;DR", "Summarize the section on {s}.", "Give me a short summary of the part about {s}.",
+        "What are the key takeaways?", "Overview please", "Briefly describe the contents of this file.", "Sum up the {s} section.",
+        "What does the {s} section cover?", "Summarise the {s} part in two sentences.", "Recap the document for me."], 30,
+        {"s": SECTIONS}) + ["What is this paper about?", "Give me the highlights.", "Main idea of the text?"]
+    ords = ["first", "second", "third", "fourth", "fifth", "last", "tenth"]
+    d["page_lookup"] = pick(rng, [
+        "What is on page {n}?", "Read page {n}.", "Go to page {n}.", "Take me to page {n}.", "Summarize page {n}.",
+        "What does page {n} say?", "Jump to page {n}.", "Read me page {n} again.", "Turn to page {n}.", "Show page {n}",
+        "page {n} please", "Open page {n}", "Go back to page {n}.", "What is written on page {n}?", "Read the {o} page.",
+        "Go to the {o} page.", "What is on the {o} page?", "Start reading from page {n}.", "Skip to page {n}.", "Read p. {n}"], 44,
+        {"n": [str(i) for i in range(1, 41)] + ["two", "three", "five", "seven"], "o": ords}) + [
+        "Go to the last page.", "Read the final page.", "Take me to the first page."]
+    d["other"] = pick(rng, [
+        "Why is {t} important?", "How does {t} work?", "Explain how {t} works.", "What are the advantages of {t}?",
+        "Compare {t} and {u}.", "How can I use {t}?", "Why did {e}?", "What are the benefits of {t}?", "How do I set up {t}?",
+        "What are the disadvantages of {t}?", "What is the difference between {t} and {u}?", "Tell me more about {t}.",
+        "How is {t} different from {u}?", "Why would someone choose {t}?", "How should {t} be configured?", "Describe how {t} is used."],
+        44, {"t": T, "u": T, "e": EVENTS}) + [
+        "What can I do to reduce my carbon footprint?", "What happens if the contrast is too low?", "Any tips for beginners?",
+        "What problems does the author raise?", "What does the author think about it?", "Can you help me understand this?"]
+    return d
+
+
+HELD = {
+    "definition": ["What exactly is a screen reader?", "Could you tell me the meaning of alt text?", "What do they mean by compound interest?",
+                   "Define the term carbon footprint.", "What's OCR?", "Explain the term inflation.", "What is NVDA?",
+                   "What does GDP stand for?", "Meaning of dietary fibre?", "What is meant by renewable energy?"],
+    "number": ["How many words per minute do experts listen at?", "What contrast ratio is recommended?", "How long does the battery last?",
+               "What percentage of adults are affected?", "How much does it cost?", "How many cells does a braille display have?",
+               "What is the speech rate for beginners?", "By how much did prices rise?", "How many pages does the report have?",
+               "What was the total revenue in 2023?"],
+    "wh_fact": ["Who is the author of this report?", "Which year did the treaty get signed?", "Where was the conference held?",
+                "Who funds the project?", "When was NVDA released?", "Name the company that makes JAWS.",
+                "Which organisation published these guidelines?", "Where do the authors work?", "What year did the war end?",
+                "Who are the people mentioned in the history section?"],
+    "yes_no": ["Is NVDA free to use?", "Does the document mention braille?", "Can I use it without internet?", "Are headings read aloud?",
+               "Was the policy approved?", "Do beginners prefer slower speech?", "Is the report from 2023?",
+               "Should large text have a lower contrast ratio?", "Has the budget increased?", "Will it work on Linux?"],
+    "summary": ["Summarise the whole thing for me.", "What's this file about?", "Quick overview please.", "Give me the key points of the document.",
+                "Tell me the main idea.", "Sum up chapter two.", "Briefly, what does it cover?", "What are the highlights?",
+                "Short summary of the finance section.", "Can you recap what this text says?"],
+    "page_lookup": ["Read page 12 to me.", "Take me to the third page.", "What's written on page 7?", "Open page 2.", "Go back to page 1.",
+                    "Jump to the last page.", "Show me the second page.", "page five", "Start from page 9.", "What does page 4 contain?"],
+    "other": ["Why does contrast matter for low vision users?", "How do screen readers handle images?", "Explain how OCR works.",
+              "What are the pros and cons of braille displays?", "Compare NVDA and JAWS.", "How should I configure the voice speed?",
+              "Why did inflation rise?", "What can I do about eye strain?", "Tell me more about the Industrial Revolution.",
+              "What are the benefits of solar power?"],
+}
+
+
+def write(path, rows):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["text", "label"])
+        w.writerows(rows)
+
+
+def make(out_dir="data/questions", seed=42):
+    rng = random.Random(seed)
+    tr = build_train(rng)
+    hold_texts = {q.lower() for v in HELD.values() for q in v}
+    train_rows = [(q, k) for k, v in tr.items() for q in v if q.lower() not in hold_texts]
+    write(Path(out_dir) / "train.csv", train_rows)
+    write(Path(out_dir) / "heldout.csv", [(q, k) for k, v in HELD.items() for q in v])
+    return len(train_rows), sum(len(v) for v in HELD.values())
+
+
+if __name__ == "__main__":
+    print("train, heldout rows:", make())
+```
+### `tools/train_questions.py`
+```python
+"""python -m tools.train_questions  -> trains on data/questions/train.csv, evaluates on heldout.csv
+(+ data/questions/heldout_user.csv if present), prints per-class report, confusion, margin table, errors.
+Saves data/models/question_clf.joblib and data/models/question_log.txt"""
+import numpy as np
 from collections import Counter
+from pathlib import Path
 
-from src.nlp.block_classifier import LABELS, MODEL_PATH, train
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
+from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
-p = argparse.ArgumentParser()
-p.add_argument("--csv", default="data/labels/labels.csv")
-p.add_argument("--manual-only", action="store_true", help="use only gold+manual rows")
-p.add_argument("--context", action="store_true", help="add prev/next block features")
-p.add_argument("--out", default=str(MODEL_PATH))
-a = p.parse_args()
+from src.nlp.question_classifier import LABELS, MODEL_PATH, load_csv, make_pipeline, train
 
 lines = []
 
 
-def log(s):
+def log(s=""):
     print(s)
     lines.append(str(s))
 
 
-res = train(a.csv, a.out, log, manual_only=a.manual_only, context=a.context)
-rows, y, pred = res["rows"], res["y"], res["pred"]
-log(f"label counts: {dict(Counter(map(str, y)))}")
+Xtr, ytr = load_csv("data/questions/train.csv")
+Xh, yh = load_csv("data/questions/heldout.csv")
+if Path("data/questions/heldout_user.csv").exists():
+    xu, yu = load_csv("data/questions/heldout_user.csv")
+    Xh, yh = Xh + xu, yh + yu
+    log(f"including {len(xu)} user-written heldout questions")
+log(f"train={len(Xtr)} heldout={len(Xh)} counts={dict(Counter(ytr))}")
 
-try:  # confusion matrix (rows=true, cols=pred)
-    from sklearn.metrics import confusion_matrix
-    labs = [l for l in LABELS if l in set(y) | set(pred)]
-    cm = confusion_matrix(y, pred, labels=labs)
-    log("confusion (rows=true, cols=pred): " + " ".join(l[:5] for l in labs))
-    for l, r in zip(labs, cm):
-        log(f"{l[:9]:>9} " + " ".join(f"{v:5d}" for v in r))
-except Exception as e:
-    log(f"confusion matrix skipped: {e}")
+cv = cross_val_predict(make_pipeline(), Xtr, ytr, cv=StratifiedKFold(5, shuffle=True, random_state=42))
+log(f"5-fold CV on train (optimistic, templated data): macro-F1={f1_score(ytr, cv, average='macro'):.3f}")
 
-with open("data/models/errors.csv", "w", encoding="utf-8", newline="") as fh:
-    w = csv.writer(fh)
-    w.writerow(["doc", "block_id", "true", "pred", "how", "text"])
-    for r, t, q in zip(rows, y, pred):
-        if t != q:
-            w.writerow([r["doc"], r["block_id"], t, q, r["how"], r["text"][:80]])
-log(f"misclassified: {int((y != pred).sum())} of {len(y)} -> data/models/errors.csv")
+model = train("data/questions/train.csv", MODEL_PATH)
+pred = list(model.predict(Xh))
+log(f"HELDOUT macro-F1={f1_score(yh, pred, average='macro'):.3f} accuracy={np.mean(np.array(pred) == np.array(yh)):.3f}")
+log(classification_report(yh, pred, labels=LABELS, zero_division=0))
+cm = confusion_matrix(yh, pred, labels=LABELS)
+log("confusion (rows=true, cols=pred): " + " ".join(l[:5] for l in LABELS))
+for l, r in zip(LABELS, cm):
+    log(f"{l[:9]:>9} " + " ".join(f"{v:5d}" for v in r))
 
-try:  # Baseline: Reader heuristics vs gold on the same rows
-    from sklearn.metrics import f1_score
-    from src.tts.reader import is_heading, is_skipped
-
-    def blk(r):
-        d = {}
-        for k, v in r.items():
-            if k in ("text", "doc", "label", "how", "block_id"):
-                d[k] = v
-            elif v in ("True", "False"):
-                d[k] = v == "True"
-            else:
-                d[k] = float(v or 0)
-        d["id"] = r["block_id"]
-        d["source"] = "ocr" if d.get("is_ocr") else "text"
-        return d
-
-    bl = [blk(r) for r in rows]
-    h_t = [l == "heading" for l in y]
-    s_t = [l in ("footer", "page_number") for l in y]
-    log(f"heading F1  heuristic={f1_score(h_t, [bool(is_heading(b)) for b in bl]):.3f}"
-        f"  ml={f1_score(h_t, [l == 'heading' for l in pred]):.3f}")
-    log(f"skip F1     heuristic={f1_score(s_t, [bool(is_skipped(b)) for b in bl]):.3f}"
-        f"  ml={f1_score(s_t, [l in ('footer', 'page_number') for l in pred]):.3f}")
-except Exception as e:
-    log(f"baseline comparison skipped: {type(e).__name__}: {e}")
-
-open("data/models/train_log.txt", "w", encoding="utf-8").write("\n".join(lines))
+S = model.decision_function(Xh)
+srt = np.sort(S, axis=1)
+margin = srt[:, -1] - srt[:, -2]
+log("margin threshold -> coverage, accuracy on kept:")
+for t in (0.0, 0.1, 0.2, 0.3, 0.5):
+    keep = margin >= t
+    acc = np.mean(np.array(pred)[keep] == np.array(yh)[keep]) if keep.any() else 0
+    log(f"  {t}: coverage={keep.mean():.2f} acc={acc:.3f}")
+log("misclassified (true -> pred | margin | text):")
+for x, t, p, m in zip(Xh, yh, pred, margin):
+    if t != p:
+        log(f"  {t} -> {p} | {m:.2f} | {x}")
+Path("data/models/question_log.txt").write_text("\n".join(lines), encoding="utf-8")
 ```
-### `tests/test_classifier.py` (full replacement)
+### `tests/test_questions.py`
 ```python
-import csv
-
-import numpy as np
 import pytest
+from sklearn.metrics import f1_score
 
-from src.nlp.block_classifier import FEATURES, LABELS, classify_document, predict, train
-
-
-def _synth(path, n_docs=4, per=42, seed=0):
-    rng = np.random.default_rng(seed)
-    protos = {  # size_ratio, bold, rel_y0, n_words, bullet, pagenum, repeated
-        "heading": (1.6, .9, .2, 4, 0, 0, 0), "paragraph": (1.0, 0, .5, 60, 0, 0, 0),
-        "list": (1.0, 0, .5, 12, 1, 0, 0), "table": (.95, 0, .5, 5, 0, 0, 0),
-        "footer": (.8, 0, .95, 6, 0, 0, 1), "page_number": (.8, 0, .97, 1, 0, 1, 1),
-        "caption": (.9, 0, .6, 10, 0, 0, 0)}
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, ["doc", "block_id", "label", "how", "text"] + FEATURES)
-        w.writeheader()
-        for d in range(n_docs):
-            for i in range(per):
-                lab = LABELS[i % 7]
-                s, b, y0, nw, bu, pn, rp = protos[lab]
-                r = dict.fromkeys(FEATURES, 0)
-                r.update(size_ratio=s + rng.normal(0, .03), bold_ratio=b,
-                         rel_y0=y0 + rng.normal(0, .02), rel_y1=y0 + .03,
-                         n_words=nw + int(rng.integers(0, 3)), n_chars=(nw + 2) * 6,
-                         starts_with_bullet=bu, looks_like_page_number=pn, repeated_margin=rp,
-                         rel_x0=.1, rel_width=.8, n_lines=1, is_ocr=0)
-                w.writerow({"doc": f"d{d}", "block_id": f"p1_b{i}", "label": lab,
-                            "how": "gold", "text": "x", **r})
+from src.nlp.question_classifier import extract_page, load_csv, plan, train
+from tools.make_question_data import make
 
 
-def test_train_predict_and_doc(tmp_path):
-    c, m = tmp_path / "l.csv", tmp_path / "m.joblib"
-    _synth(c)
-    res = train(c, m, log=lambda s: None)
-    assert res["macro_f1"] > 0.8
-    block = {"size_ratio": 1.6, "bold_ratio": .9, "rel_y0": .2, "n_words": 4, "n_chars": 36,
-             "rel_y1": .23, "rel_x0": .1, "rel_width": .8, "n_lines": 1, "source": "text"}
-    out = predict([dict(block)], m)
-    assert out[0]["label"] == "heading" and 0 < out[0]["label_conf"] <= 1
-    doc = classify_document({"pages": [{"blocks": [dict(block), dict(block)]}]}, m)
-    assert all("label" in b for b in doc["pages"][0]["blocks"])
+@pytest.fixture(scope="module")
+def model(tmp_path_factory):
+    d = tmp_path_factory.mktemp("q")
+    make(d)
+    m = train(d / "train.csv", d / "m.joblib")
+    return m, d
 
 
-def test_needs_two_docs(tmp_path):
-    c = tmp_path / "l.csv"
-    _synth(c, n_docs=1)
-    with pytest.raises(ValueError):
-        train(c, tmp_path / "m.joblib", log=lambda s: None)
+def test_heldout_macro_f1(model):
+    m, d = model
+    X, y = load_csv(d / "heldout.csv")
+    assert f1_score(y, m.predict(X), average="macro") >= 0.85
 
 
-def test_context_and_manual_only(tmp_path):
-    from src.nlp.block_classifier import add_context, load_labels
-    c, m = tmp_path / "l.csv", tmp_path / "m.joblib"
-    _synth(c)
-    X, y, docs, how, rows = load_labels(c, context=True)
-    assert X.shape[1] == len(FEATURES) + 2 * 6 and len(X) == len(y)
-    assert add_context(np.ones((3, len(FEATURES))), [0, 0, 1]).shape == (3, len(FEATURES) + 12)
-    assert len(load_labels(c, manual_only=True)[1]) == len(y)  # gold rows are kept
-    res = train(c, m, log=lambda s: None, context=True)
-    assert res["macro_f1"] > 0.8
-    block = {"size_ratio": 1.6, "bold_ratio": .9, "rel_y0": .2, "n_words": 4, "n_chars": 36,
-             "rel_y1": .23, "rel_x0": .1, "rel_width": .8, "n_lines": 1, "source": "text"}
-    assert predict([dict(block), dict(block)], m)[0]["label"] in LABELS
+@pytest.mark.parametrize("q,t", [
+    ("What is OCR?", "definition"), ("Who wrote the report?", "wh_fact"), ("How many words per minute do beginners prefer?", "number"),
+    ("Is NVDA free?", "yes_no"), ("Summarize this document.", "summary"), ("Read page 4.", "page_lookup"),
+    ("Why is contrast important?", "other")])
+def test_plan_types(model, q, t):
+    assert plan(q, model[0])["type"] == t
+
+
+def test_extract_page_and_fallback(model):
+    cases = {"Read page 12": 12, "go to p. 3": 3, "What is on page five?": 5, "the third page please": 3,
+             "Jump to the last page": -1, "Is NVDA free?": None}
+    for q, n in cases.items():
+        assert extract_page(q) == n
+    p = plan("Read page 4.", model[0])
+    assert p["page"] == 4 and p["handler"] == "page" and set(p) == {"type", "margin", "page", "handler"}
+    assert plan("Take me somewhere", model[0], min_margin=0)["type"] != "page_lookup"
 ```
-Verify: `python -m pytest tests/test_classifier.py -q` → expected **3 passed** (about 4 s).
 
-## Part C: Train and compare (uses the user's real `data/labels/labels.csv`)
-Check first: `python -m tools.label --stats | Select-Object -Last 15`. Report the manual-label counts. If manual labels < 350, STOP and tell the user to label more.
-Run the three variants (each writes its own model file, log goes to chat only as the lines below):
+## Part C: Verify (agent)
 ```
-python -m tools.train_classifier --out data\models\v_all.joblib
-python -m tools.train_classifier --manual-only --out data\models\v_manual.joblib
-python -m tools.train_classifier --manual-only --context --out data\models\v_manual_ctx.joblib
+python -m tools.make_question_data
+python -m pytest tests/test_questions.py -q
+python -m tools.train_questions
+python -m src.nlp.question_classifier "Take me to page 9"
+python -m src.nlp.question_classifier "Is NVDA free?"
+python -m src.nlp.question_classifier "How many words per minute do beginners prefer?"
+python -m src.nlp.question_classifier "Why does contrast matter?"
+python -m pytest -q | Select-Object -Last 3
 ```
-After each run report ONLY: the `macro-F1 by model` line, the per-class table (precision/recall/F1/support), the confusion matrix, the `misclassified:` line, and the two baseline lines (heading F1, skip F1). Put the three results in one table: variant | chosen model | macro-F1 | heading F1 | list F1 | table F1 | caption F1.
-Decision rule: choose the highest macro-F1. Prefer the simpler variant unless the more complex one gains at least 0.02 macro-F1. Note: `v_all` includes noisy `auto` rows and a different row set, so it is not strictly comparable; do not pick it just for a higher number if its manual-only per-class scores are lower.
-`--context` caveat: neighbours are taken from adjacent labelled rows, so it only helps if documents are fully labelled. State in the report whether labelled blocks per page look complete (compare a doc's row count with its block count in `data\processed\*.json`, one doc only).
-Retrain the winner to the default path (rerun the winning command with no `--out`) → `data\models\block_classifier.joblib`. Then: `Get-Content data\models\errors.csv -TotalCount 15` and report it.
-Delete the three `v_*.joblib` files afterwards.
+Expected: `train, heldout rows: (327, 70)`; **9 passed** (about 3 s); heldout macro-F1 about **0.94** (anything 0.90 to 0.97 is normal; the weakest class is `yes_no`); CLI types `page_lookup` (page 9), `yes_no`, `number`, `other`. Full suite: 28 + 9 = **37** while reader has 2 tests, **43** after the reader is restored. Report the full `train_questions` output (about 45 lines) and the four CLI lines.
 
-## Part D: End-to-end
-`python -m src.tts.cli data\samples\sam.pdf --dry-run --classify | Select-Object -First 15`
-Expected: runs without error, headings announced, footers/page numbers skipped. Paste the 15 lines.
+## Part D: USER step (about 10 minutes, not the agent)
+The built-in heldout set was written by Claude in the same style as the training templates, so its score is optimistic. Create `data\questions\heldout_user.csv` with header `text,label` and **at least 30 questions in your own words** (4 or 5 per type) about your own documents. Labels: `definition`, `wh_fact`, `number`, `yes_no`, `summary`, `page_lookup`, `other`. Rules: number = asks for a quantity, duration, ratio or count; definition = "what is <concept>"; wh_fact = who/when/where/which/what year; yes_no = starts with is/are/does/can/was...; summary = overview of the whole document or a section; page_lookup = names a page to go to or read; other = why/how/compare/explain. Include some messy, short or informal phrasings.
 
-## Part E: Commit (only if everything above passed)
-1. `python -m pytest -q | Select-Object -Last 5` → expected **25 passed**. If not 25 or any failure: do NOT commit; report.
-2. Confirm `.gitignore` contains `.venv` (add the single line if missing and say so).
-3. `git add src tests tools data/labels data/models/block_classifier.joblib data/models/train_log.txt requirements.txt pytest.ini .gitignore`
-4. `git commit -m "Day 6-7: block classifier, error report, optional context features"` (no push). Report `git log --oneline -3` and `git status --short`.
+## Part E: Final score and margin check (agent, after Part D)
+Run `python -m tools.train_questions` again (it picks up `heldout_user.csv` automatically). Report the full output. Margin rule: keep `MIN_MARGIN = 0.1` if accuracy at 0.1 in the table is at least 0.95; otherwise set it (one-line edit in `src/nlp/question_classifier.py`) to the smallest threshold in the table that has accuracy at least 0.95 and coverage at least 0.80. Make no other changes. Do not add or edit training questions to fix heldout errors.
+
+## Part F: Commit
+```
+git add src/nlp/question_classifier.py tools/make_question_data.py tools/train_questions.py tests/test_questions.py data/questions data/models/question_log.txt
+git commit -m "Day 9: question-type classifier and routing plan"
+git log --oneline -3
+```
+No push.
 
 ## Acceptance criteria
-1. Python 3.11.9 in `.venv`; no `pyproject.toml`/`uv.lock`.
-2. Part A numbers reported with real output; the 6-test OCR discrepancy explained or flagged with 2 options.
-3. Classifier tests: 3 passed; full suite: 25 passed.
-4. Three-variant table delivered; winner justified by the decision rule; model saved at the default path.
-5. Per-class F1 reported honestly. Target (not a gate): >= 0.90 on heading, paragraph, footer, page_number.
-6. `--classify --dry-run` works; commit made locally.
+1. Python 3.11.9 in `.venv`; no new packages.
+2. `tests/test_questions.py`: 9 passed; full-suite total matches Part C (state which reader case applies).
+3. Heldout macro-F1 reported for the built-in set and, after Part D, for built-in + user questions. Target (not a gate): >= 0.90 on the combined set; report honestly if lower.
+4. The four CLI checks give the expected types, and "Take me to page 9" gives `page: 9`.
+5. Commit made locally.
 
 ## Report back (paste verbatim, nothing more)
-`sys.version` + executable | A2 counts by file | A3 summary + skips + 5 slowest | A4 outputs | Part C table + winner's confusion matrix + first 15 errors | Part D lines | Part E `git log`/`git status` | Deviations (files touched beyond the list).
+`sys.version` + executable | Part A | Part C outputs | Part E output (after Part D) | Part F `git log` | Deviations.
 
-## Known limitations
-- Per-block classifier; context mode only sees one neighbour each side.
-- If list/table/caption F1 stays low (< 0.80), the fix is more labelled examples of those classes, not more features: use `data\models\errors.csv` to see which documents and layouts fail, then label similar pages and retrain.
-- Scanned pages have `bold_ratio = 0` and estimated sizes, so heading recall on OCR documents is expected to be weaker.
+## Known limitations (accepted)
+- Training data is templated plus hand-written: expect real-world accuracy below the heldout score. The user-written heldout set is the honest number.
+- Ambiguous forms such as "Is the report from 2023?" (yes_no vs wh_fact) and "What is the speech rate?" (number vs definition) will sometimes be wrong; low-margin predictions fall back to `other`, which Day 10 answers with plain top passages.
+- `extract_page` is regex-based: English only, understands "page 12", "p. 3", "page five", "third page", "last page".
+- `plan()` only returns handler names; the handlers themselves are Day 10.

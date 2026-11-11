@@ -1,0 +1,328 @@
+text,label
+Can you define a mortgage?,definition
+Can you define the budget deficit?,definition
+Define NVDA.,definition
+Give me a definition of contrast ratio.,definition
+Give me a definition of heading structure.,definition
+Give me a definition of renewable energy.,definition
+Please define GDP,definition
+Please define heading structure,definition
+Please define speech rate,definition
+Please define the Treaty of Versailles,definition
+Please define the keyboard shortcut,definition
+Tell me what OCR is.,definition
+Tell me what contrast ratio is.,definition
+Tell me what dietary fibre is.,definition
+Tell me what heading structure is.,definition
+Tell me what the water cycle is.,definition
+What do you mean by a mortgage?,definition
+What do you mean by machine learning?,definition
+What do you mean by speech rate?,definition
+What does NVDA mean?,definition
+What does OCR mean?,definition
+What does a bond mean?,definition
+What does a hash function mean?,definition
+What does compound interest mean?,definition
+What exactly is alt text?,definition
+What exactly is contrast ratio?,definition
+What exactly is inflation?,definition
+What is a braille display,definition
+What is a carbon footprint,definition
+What is a hash function?,definition
+What is a screen reader?,definition
+What is a solar panel,definition
+What is alt text,definition
+What is meant by speech rate?,definition
+What is meant by the Treaty of Versailles?,definition
+What is meant by the budget deficit?,definition
+What is the keyboard shortcut?,definition
+What is wind power,definition
+what's a screen reader,definition
+what's vitamin D,definition
+What does WCAG stand for?,definition
+What does the abbreviation OCR stand for?,definition
+Meaning of the word fibre?,definition
+What is the definition of inflation?,definition
+Define the term GDP,definition
+What do they mean by heading levels?,definition
+What is the meaning of alt text?,definition
+What is a refreshable braille display?,definition
+Explain the term compound interest.,definition
+In what year was vitamin D first released?,wh_fact
+What year did the experiment take place?,wh_fact
+What year did the merger happen?,wh_fact
+What year did the study begin?,wh_fact
+When did prices rise?,wh_fact
+When did the conference start?,wh_fact
+When did the factory open?,wh_fact
+When was compound interest introduced?,wh_fact
+When was photosynthesis introduced?,wh_fact
+When was the guidelines published?,wh_fact
+When was the project published?,wh_fact
+When was the report published?,wh_fact
+Where can I find a carbon footprint?,wh_fact
+Where did the conference start?,wh_fact
+Where did the experiment take place?,wh_fact
+Where did the factory open?,wh_fact
+Where is the conference?,wh_fact
+Where is the factory?,wh_fact
+Where is the museum?,wh_fact
+Where is the trial?,wh_fact
+Where was the headquarters located?,wh_fact
+Which company makes NVDA?,wh_fact
+Which company makes compound interest?,wh_fact
+Which country introduced the Industrial Revolution?,wh_fact
+Which organisation published the author?,wh_fact
+Which organisation published the guidelines?,wh_fact
+Which organisation published the survey?,wh_fact
+Who are the authors of the project?,wh_fact
+Who are the authors of the report?,wh_fact
+Who founded the company behind a hash function?,wh_fact
+Who founded the company behind a neural network?,wh_fact
+Who founded the company behind dietary fibre?,wh_fact
+Who founded the company behind protein?,wh_fact
+Who founded the company behind wind power?,wh_fact
+Who funded the project?,wh_fact
+Who funded the report?,wh_fact
+Who funded the survey?,wh_fact
+Who funded the treaty?,wh_fact
+Who invented OCR?,wh_fact
+Who invented a braille display?,wh_fact
+Who invented a neural network?,wh_fact
+Who invented contrast ratio?,wh_fact
+Who is responsible for the report?,wh_fact
+Who wrote the treaty?,wh_fact
+Who is the director?,wh_fact
+Name the author of this report.,wh_fact
+Which city hosted the event?,wh_fact
+Whom did they interview?,wh_fact
+When did it all start?,wh_fact
+Who is quoted in the introduction?,wh_fact
+By how much did budget change?,number
+By how much did growth rate change?,number
+By how much did interest rate change?,number
+By how much did speech rate change?,number
+How big was the speech rate?,number
+How big was the temperature?,number
+How high is the budget?,number
+How high is the temperature?,number
+How large is the growth rate?,number
+How large is the interest rate?,number
+How large is the sample size?,number
+How large is the temperature?,number
+How long does a braille display take?,number
+How long does the budget deficit take?,number
+How long does the keyboard shortcut take?,number
+How many chapters does the treaty mention?,number
+How many countries are there in vitamin D?,number
+How many pages does the author have?,number
+How many pages does the guidelines have?,number
+How many pages does the project have?,number
+How many pages does the study have?,number
+How many people took part in the author?,number
+How many people took part in the project?,number
+How many people took part in the survey?,number
+How many people took part in the treaty?,number
+How many steps are there in a neural network?,number
+How many words per minute do children prefer?,number
+How many words per minute do experts prefer?,number
+How many words per minute do most users prefer?,number
+How much does NVDA cost?,number
+How much does heading structure cost?,number
+What is the average contrast ratio?,number
+What is the average interest rate?,number
+What is the average sample size?,number
+What is the ratio required for GDP?,number
+What is the ratio required for a bond?,number
+What is the ratio required for contrast ratio?,number
+What is the recommended price?,number
+What is the recommended temperature?,number
+What percentage of households was reported?,number
+What percentage of patients was reported?,number
+What percentage of voters was reported?,number
+What was the total interest rate in the report?,number
+What was the total speech rate in the report?,number
+How many cells does a typical braille display have?,number
+What is the minimum contrast ratio for normal text?,number
+How much did the deficit grow in 2022?,number
+How many words per minute is considered fast?,number
+What was the inflation rate last year?,number
+How many hours of sunlight are needed?,number
+Are a braille display and text-to-speech the same thing?,yes_no
+Are a neural network and heading structure the same thing?,yes_no
+Are heading structure and speech rate the same thing?,yes_no
+Are there any limits on the water cycle?,yes_no
+Are there any limits on wind power?,yes_no
+Can GDP be used offline?,yes_no
+Can a bond be used offline?,yes_no
+Can a hash function be used offline?,yes_no
+Could a mortgage be replaced?,yes_no
+Could compound interest be replaced?,yes_no
+Could contrast ratio be replaced?,yes_no
+Could dietary fibre be replaced?,yes_no
+Could inflation be replaced?,yes_no
+Could the Industrial Revolution be replaced?,yes_no
+Did the guidelines mention NVDA?,yes_no
+Do I need NVDA?,yes_no
+Do I need a hash function?,yes_no
+Do I need a solar panel?,yes_no
+Do I need text-to-speech?,yes_no
+Do I need the keyboard shortcut?,yes_no
+Has a braille display changed recently?,yes_no
+Has a neural network changed recently?,yes_no
+Has the budget deficit changed recently?,yes_no
+Has the keyboard shortcut changed recently?,yes_no
+Is NVDA free?,yes_no
+Is a braille display mentioned in the document?,yes_no
+Is a screen reader mentioned in the document?,yes_no
+Is compound interest free?,yes_no
+Is contrast ratio free?,yes_no
+Is inflation open source?,yes_no
+Is photosynthesis required by law?,yes_no
+Is the keyboard shortcut open source?,yes_no
+Should beginners use OCR?,yes_no
+Should beginners use machine learning?,yes_no
+Should beginners use wind power?,yes_no
+Was a solar panel widely adopted?,yes_no
+Was alt text widely adopted?,yes_no
+Was renewable energy widely adopted?,yes_no
+Was vitamin D widely adopted?,yes_no
+Will NVDA work on Windows?,yes_no
+Will a neural network work on Windows?,yes_no
+Will dietary fibre work on Windows?,yes_no
+Will heading structure work on Windows?,yes_no
+Will photosynthesis work on Windows?,yes_no
+Is it free?,yes_no
+Does it work offline?,yes_no
+Is this document about finance?,yes_no
+Can I use it with a keyboard only?,yes_no
+Briefly describe the contents of this file.,summary
+Can you sum up the document?,summary
+Give me a short summary of the part about introduction.,summary
+Give me a short summary of the part about keyboard navigation.,summary
+Give me a short summary of the part about methods.,summary
+Give me a short summary of the part about results.,summary
+Give me a summary.,summary
+Give me an overview of this document.,summary
+Overview please,summary
+Recap the document for me.,summary
+Sum up the finance section.,summary
+Sum up the keyboard navigation section.,summary
+Sum up the methods section.,summary
+Summarise the accessibility part in two sentences.,summary
+Summarise the finance part in two sentences.,summary
+Summarise the methods part in two sentences.,summary
+Summarize the section on accessibility.,summary
+Summarize the section on energy.,summary
+Summarize the section on introduction.,summary
+Summarize this document.,summary
+TL;DR,summary
+What are the key takeaways?,summary
+What are the main points?,summary
+What does the accessibility section cover?,summary
+What does the energy section cover?,summary
+What does the history section cover?,summary
+What does the methods section cover?,summary
+What does the nutrition section cover?,summary
+What is the gist of this?,summary
+What is this document about?,summary
+What is this paper about?,summary
+Give the highlights.,summary
+Main idea of the text?,summary
+Go back to page 18.,page_lookup
+Go back to page 36.,page_lookup
+Go back to page 37.,page_lookup
+Go back to page 40.,page_lookup
+Go to page 10.,page_lookup
+Go to page 26.,page_lookup
+Go to page 28.,page_lookup
+Go to page 40.,page_lookup
+Go to the last page.,page_lookup
+Go to the second page.,page_lookup
+Go to the tenth page.,page_lookup
+Jump to page 40.,page_lookup
+Open page 15,page_lookup
+Open page 24,page_lookup
+Open page 9,page_lookup
+Read me page 32 again.,page_lookup
+Read me page 39 again.,page_lookup
+Read me page seven again.,page_lookup
+Read page 20.,page_lookup
+Read page 39.,page_lookup
+Read the fifth page.,page_lookup
+Read the last page.,page_lookup
+Show page 13,page_lookup
+Show page 2,page_lookup
+Show page 21,page_lookup
+Show page two,page_lookup
+Skip to page 19.,page_lookup
+Skip to page seven.,page_lookup
+Start reading from page 11.,page_lookup
+Summarize page 15.,page_lookup
+Summarize page 16.,page_lookup
+Summarize page 35.,page_lookup
+Summarize page two.,page_lookup
+Take me to page 29.,page_lookup
+Turn to page 30.,page_lookup
+Turn to page 35.,page_lookup
+What does page 11 say?,page_lookup
+What does page 17 say?,page_lookup
+What is on page 30?,page_lookup
+What is on the third page?,page_lookup
+What is written on page 12?,page_lookup
+What is written on page 37?,page_lookup
+page 4 please,page_lookup
+page 8 please,page_lookup
+Go to the last page.,page_lookup
+Read the final page.,page_lookup
+Take me to the first page.,page_lookup
+Compare a braille display and a braille display.,other
+Compare a carbon footprint and dietary fibre.,other
+Compare a mortgage and a braille display.,other
+Compare contrast ratio and OCR.,other
+Compare the water cycle and the budget deficit.,other
+Describe how a bond is used.,other
+Describe how dietary fibre is used.,other
+Describe how speech rate is used.,other
+Explain how GDP works.,other
+Explain how a neural network works.,other
+Explain how contrast ratio works.,other
+Explain how protein works.,other
+Explain how vitamin D works.,other
+How can I use photosynthesis?,other
+How do I set up a bond?,other
+How do I set up the budget deficit?,other
+How do I set up the water cycle?,other
+How does the keyboard shortcut work?,other
+How does the water cycle work?,other
+How is vitamin D different from the keyboard shortcut?,other
+How should compound interest be configured?,other
+How should machine learning be configured?,other
+Tell me more about OCR.,other
+Tell me more about a braille display.,other
+Tell me more about speech rate.,other
+What are the advantages of a neural network?,other
+What are the advantages of dietary fibre?,other
+What are the advantages of the Industrial Revolution?,other
+What are the advantages of the water cycle?,other
+What are the benefits of machine learning?,other
+What are the benefits of the budget deficit?,other
+What are the disadvantages of machine learning?,other
+What is the difference between a carbon footprint and the Treaty of Versailles?,other
+What is the difference between a hash function and OCR?,other
+What is the difference between vitamin D and renewable energy?,other
+Why did the experiment take place?,other
+Why did the study begin?,other
+Why is OCR important?,other
+Why is the Treaty of Versailles important?,other
+Why would someone choose compound interest?,other
+Why would someone choose machine learning?,other
+Why would someone choose photosynthesis?,other
+Why would someone choose renewable energy?,other
+Why would someone choose the budget deficit?,other
+What can I do to reduce my carbon footprint?,other
+What happens if the contrast is too low?,other
+Any tips for beginners?,other
+What problems does the author raise?,other
+What does the author think about it?,other
+Can you help me understand this?,other
