@@ -1,0 +1,12 @@
+questions=22 docs=6
+min_score=0.2: heard=0.773 src3=0.818 wrong_abstain=0 avg_words=15 types={'definition': 12, 'wh_fact': 5, 'number': 2, 'yes_no': 2, 'other': 1}
+min_score=0.3: heard=0.773 src3=0.818 wrong_abstain=0 avg_words=15 types={'definition': 12, 'wh_fact': 5, 'number': 2, 'yes_no': 2, 'other': 1}
+min_score=0.4: heard=0.773 src3=0.818 wrong_abstain=0 avg_words=15 types={'definition': 12, 'wh_fact': 5, 'number': 2, 'yes_no': 2, 'other': 1}
+min_score=0.5: heard=0.727 src3=0.773 wrong_abstain=0 avg_words=15 types={'definition': 12, 'wh_fact': 5, 'number': 2, 'yes_no': 2, 'other': 1}
+not heard at min_score=0.5:
+  sam | What does creation diligence involve? | type=definition found=True src3=True
+  sam | What is transparency diligence? | type=definition found=True src3=False
+  sam | What is deployment diligence? | type=definition found=True src3=False
+  sam | Who holds the copyright for the 4Ds document? | type=wh_fact found=False src3=False
+  sam | How many planets are in the solar system? | type=number found=True src3=False
+  history | What is the boiling point of nitrogen? | type=definition found=True src3=False
