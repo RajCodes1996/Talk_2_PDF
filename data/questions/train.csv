@@ -195,7 +195,9 @@ Will photosynthesis work on Windows?,yes_no
 Is it free?,yes_no
 Does it work offline?,yes_no
 Is this document about finance?,yes_no
+Are headings read aloud?,yes_no
 Can I use it with a keyboard only?,yes_no
+Was the policy approved?,yes_no
 Briefly describe the contents of this file.,summary
 Can you sum up the document?,summary
 Give me a short summary of the part about introduction.,summary

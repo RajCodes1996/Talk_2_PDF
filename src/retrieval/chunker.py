@@ -37,6 +37,7 @@ def build_chunks(doc, max_words=120, min_words=15):
                 "id": f"c{len(chunks)}", "heading": cur["heading"], "heading_id": cur["heading_id"],
                 "text": " ".join(cur["sents"]), "page_start": cur["pages"][0],
                 "page_end": cur["pages"][-1], "block_ids": sorted(set(cur["bids"]), key=cur["bids"].index),
+                "sents": [[t, pg] for t, pg in zip(cur["sents"], cur["pages"])],
                 "n_words": cur["n"]})
         cur = None
 
@@ -75,6 +76,7 @@ def build_chunks(doc, max_words=120, min_words=15):
     for c in chunks:
         if out and c["n_words"] < min_words and out[-1]["heading_id"] == c["heading_id"]:
             p = out[-1]
+            p["sents"] += c["sents"]
             p["text"] += " " + c["text"]
             p["page_end"] = c["page_end"]
             p["block_ids"] += [x for x in c["block_ids"] if x not in p["block_ids"]]

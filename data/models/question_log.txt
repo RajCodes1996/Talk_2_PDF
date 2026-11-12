@@ -1,36 +1,35 @@
-train=327 heldout=70 counts={'definition': 49, 'wh_fact': 50, 'number': 50, 'yes_no': 48, 'summary': 33, 'page_lookup': 47, 'other': 50}
-5‑fold CV on train (optimistic, templated data): macro‑F1=0.923
-HELDOUT macro‑F1=0.941 accuracy=0.943
+train=329 heldout=70 counts={'definition': 49, 'wh_fact': 50, 'number': 50, 'yes_no': 50, 'summary': 33, 'page_lookup': 47, 'other': 50}
+5‑fold CV on train (optimistic, templated data): macro‑F1=0.916
+HELDOUT macro‑F1=0.956 accuracy=0.957
               precision    recall  f1-score   support
 
   definition       1.00      1.00      1.00        10
      wh_fact       0.90      0.90      0.90        10
-      number       0.83      1.00      0.91        10
-      yes_no       0.88      0.70      0.78        10
+      number       0.91      1.00      0.95        10
+      yes_no       0.89      0.80      0.84        10
      summary       1.00      1.00      1.00        10
  page_lookup       1.00      1.00      1.00        10
        other       1.00      1.00      1.00        10
 
-    accuracy                           0.94        70
-   macro avg       0.94      0.94      0.94        70
-weighted avg       0.94      0.94      0.94        70
+    accuracy                           0.96        70
+   macro avg       0.96      0.96      0.96        70
+weighted avg       0.96      0.96      0.96        70
 
 confusion (rows=true, cols=pred): defin wh_fa numbe yes_n summa page_ other
 definitio    10     0     0     0     0     0     0
   wh_fact     0     9     0     1     0     0     0
    number     0     0    10     0     0     0     0
-   yes_no     0     1     2     7     0     0     0
+   yes_no     0     1     1     8     0     0     0
   summary     0     0     0     0    10     0     0
 page_look     0     0     0     0     0    10     0
     other     0     0     0     0     0     0    10
 margin threshold -> coverage, accuracy on kept:
-  0.0: coverage=1.00 acc=0.943
-  0.1: coverage=0.93 acc=0.985
-  0.2: coverage=0.90 acc=1.000
-  0.3: coverage=0.89 acc=1.000
-  0.5: coverage=0.83 acc=1.000
+  0.0: coverage=1.00 acc=0.957
+  0.1: coverage=0.97 acc=0.971
+  0.2: coverage=0.93 acc=1.000
+  0.3: coverage=0.91 acc=1.000
+  0.5: coverage=0.86 acc=1.000
 misclassified (true -> pred | margin | text):
-  wh_fact -> yes_no | 0.11 | Who are the people mentioned in the history section?
-  yes_no -> number | 0.04 | Was the policy approved?
-  yes_no -> wh_fact | 0.09 | Is the report from 2023?
+  wh_fact -> yes_no | 0.13 | Who are the people mentioned in the history section?
+  yes_no -> wh_fact | 0.12 | Is the report from 2023?
   yes_no -> number | 0.01 | Should large text have a lower contrast ratio?
