@@ -1,4 +1,5 @@
 """Extractive answers with spoken page citations: sentence scoring, TextRank summaries, type routing."""
+import difflib
 import math
 import re
 
@@ -75,8 +76,28 @@ class Answerer:
                 "sources": list(sources), "confidence": round(conf, 3), "found": found, "action": action}
 
     def _rank(self, q, qtype, k=3):
-        qt = set(tokenize(q)) - EXTRA_STOP
+        # Match tokens; support fuzzy/approximate matching for typos (e.g. Dilligence -> diligence)
+        raw_toks = tokenize(q)
+        qt = set()
+        doc_vocab = set(self.idf.keys())
+        for t in raw_toks:
+            if t in EXTRA_STOP:
+                continue
+            if t in doc_vocab:
+                qt.add(t)
+            else:
+                matches = difflib.get_close_matches(t, doc_vocab, n=1, cutoff=0.75)
+                if matches:
+                    qt.add(matches[0])
+                else:
+                    qt.add(t)
+
         hits = {h["chunk_id"]: h["score"] for h in self.idx.query(q, k)}
+        if not hits:
+            # Try fuzzy query chunk retrieval if exact tokens didn't hit
+            fuzzy_q = " ".join(qt)
+            if fuzzy_q and fuzzy_q != q:
+                hits = {h["chunk_id"]: h["score"] for h in self.idx.query(fuzzy_q, k)}
         denom = sum(self.idf.get(t, 0) for t in qt)
         if not hits or denom == 0:
             return []
